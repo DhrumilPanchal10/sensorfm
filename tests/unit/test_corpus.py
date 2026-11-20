@@ -215,3 +215,16 @@ def test_write_corpus_refuses_existing_shards(tmp_path: Path) -> None:
     write_corpus([rec], tmp_path, 1000, 0.0, 0)
     with pytest.raises(FileExistsError):
         write_corpus([rec], tmp_path, 1000, 0.0, 0)
+
+
+def test_window_index_ignores_low_information_spikes() -> None:
+    """Regression: flat-with-one-spike windows matched across unrelated real datasets."""
+    ref = np.zeros(1000)
+    ref[500] = 7.0
+    idx = WindowIndex(window=64)
+    idx.add_reference(
+        np.concatenate([ref, np.cumsum(np.random.default_rng(0).standard_normal(500))])
+    )
+    other = np.full(640, 3.0)
+    other[100] = 50.0
+    assert not idx.overlaps(other)

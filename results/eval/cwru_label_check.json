@@ -1,0 +1,433 @@
+{
+  "rpm_ok": 40,
+  "signature_ok_by_kind": {
+    "normal": [
+      4,
+      4
+    ],
+    "inner": [
+      11,
+      12
+    ],
+    "outer": [
+      8,
+      12
+    ],
+    "ball": [
+      0,
+      12
+    ]
+  },
+  "files": [
+    {
+      "number": 97,
+      "label": "normal",
+      "load_hp": 0,
+      "rpm": 1796.0,
+      "rpm_ok": true,
+      "peak_hz": 30.029296875,
+      "expected_hz": 29.933333333333334,
+      "signature_ok": true
+    },
+    {
+      "number": 98,
+      "label": "normal",
+      "load_hp": 1,
+      "rpm": 1772.0,
+      "rpm_ok": true,
+      "peak_hz": 29.6630859375,
+      "expected_hz": 29.533333333333335,
+      "signature_ok": true
+    },
+    {
+      "number": 99,
+      "label": "normal",
+      "load_hp": 2,
+      "rpm": 1750.0,
+      "rpm_ok": true,
+      "peak_hz": 29.296875,
+      "expected_hz": 29.166666666666668,
+      "signature_ok": true
+    },
+    {
+      "number": 100,
+      "label": "normal",
+      "load_hp": 3,
+      "rpm": 1725.0,
+      "rpm_ok": true,
+      "peak_hz": 28.564453125,
+      "expected_hz": 28.75,
+      "signature_ok": true
+    },
+    {
+      "number": 105,
+      "label": "inner_007",
+      "load_hp": 0,
+      "rpm": 1797.0,
+      "rpm_ok": true,
+      "peak_hz": 161.4990234375,
+      "expected_hz": 162.18524,
+      "signature_ok": true
+    },
+    {
+      "number": 106,
+      "label": "inner_007",
+      "load_hp": 1,
+      "rpm": 1772.0,
+      "rpm_ok": true,
+      "peak_hz": 159.66796875,
+      "expected_hz": 159.92890666666668,
+      "signature_ok": true
+    },
+    {
+      "number": 107,
+      "label": "inner_007",
+      "load_hp": 2,
+      "rpm": 1748.0,
+      "rpm_ok": true,
+      "peak_hz": 157.470703125,
+      "expected_hz": 157.76282666666665,
+      "signature_ok": true
+    },
+    {
+      "number": 108,
+      "label": "inner_007",
+      "load_hp": 3,
+      "rpm": 1721.0,
+      "rpm_ok": true,
+      "peak_hz": 154.9072265625,
+      "expected_hz": 155.32598666666667,
+      "signature_ok": true
+    },
+    {
+      "number": 118,
+      "label": "ball_007",
+      "load_hp": 0,
+      "rpm": 1796.0,
+      "rpm_ok": true,
+      "peak_hz": 30.029296875,
+      "expected_hz": 70.54687999999999,
+      "signature_ok": false
+    },
+    {
+      "number": 119,
+      "label": "ball_007",
+      "load_hp": 1,
+      "rpm": 1772.0,
+      "rpm_ok": true,
+      "peak_hz": 41.3818359375,
+      "expected_hz": 69.60416,
+      "signature_ok": false
+    },
+    {
+      "number": 120,
+      "label": "ball_007",
+      "load_hp": 2,
+      "rpm": 1748.0,
+      "rpm_ok": true,
+      "peak_hz": 75.8056640625,
+      "expected_hz": 68.66144,
+      "signature_ok": false
+    },
+    {
+      "number": 121,
+      "label": "ball_007",
+      "load_hp": 3,
+      "rpm": 1722.0,
+      "rpm_ok": true,
+      "peak_hz": 57.4951171875,
+      "expected_hz": 67.64016,
+      "signature_ok": false
+    },
+    {
+      "number": 130,
+      "label": "outer_007",
+      "load_hp": 0,
+      "rpm": 1796.0,
+      "rpm_ok": true,
+      "peak_hz": 107.666015625,
+      "expected_hz": 107.30501333333333,
+      "signature_ok": true
+    },
+    {
+      "number": 131,
+      "label": "outer_007",
+      "load_hp": 1,
+      "rpm": 1773.0,
+      "rpm_ok": true,
+      "peak_hz": 106.201171875,
+      "expected_hz": 105.93084,
+      "signature_ok": true
+    },
+    {
+      "number": 132,
+      "label": "outer_007",
+      "load_hp": 2,
+      "rpm": 1750.0,
+      "rpm_ok": true,
+      "peak_hz": 105.1025390625,
+      "expected_hz": 104.55666666666667,
+      "signature_ok": true
+    },
+    {
+      "number": 133,
+      "label": "outer_007",
+      "load_hp": 3,
+      "rpm": 1725.0,
+      "rpm_ok": true,
+      "peak_hz": 103.271484375,
+      "expected_hz": 103.063,
+      "signature_ok": true
+    },
+    {
+      "number": 169,
+      "label": "inner_014",
+      "load_hp": 0,
+      "rpm": 1796.0,
+      "rpm_ok": true,
+      "peak_hz": 30.029296875,
+      "expected_hz": 162.09498666666664,
+      "signature_ok": false
+    },
+    {
+      "number": 170,
+      "label": "inner_014",
+      "load_hp": 1,
+      "rpm": 1774.0,
+      "rpm_ok": true,
+      "peak_hz": 160.0341796875,
+      "expected_hz": 160.10941333333332,
+      "signature_ok": true
+    },
+    {
+      "number": 171,
+      "label": "inner_014",
+      "load_hp": 2,
+      "rpm": 1752.0,
+      "rpm_ok": true,
+      "peak_hz": 158.203125,
+      "expected_hz": 158.12383999999997,
+      "signature_ok": true
+    },
+    {
+      "number": 172,
+      "label": "inner_014",
+      "load_hp": 3,
+      "rpm": 1728.0,
+      "rpm_ok": true,
+      "peak_hz": 156.005859375,
+      "expected_hz": 155.95775999999998,
+      "signature_ok": true
+    },
+    {
+      "number": 185,
+      "label": "ball_014",
+      "load_hp": 0,
+      "rpm": 1796.0,
+      "rpm_ok": true,
+      "peak_hz": 17.9443359375,
+      "expected_hz": 70.54687999999999,
+      "signature_ok": false
+    },
+    {
+      "number": 186,
+      "label": "ball_014",
+      "load_hp": 1,
+      "rpm": 1772.0,
+      "rpm_ok": true,
+      "peak_hz": 17.9443359375,
+      "expected_hz": 69.60416,
+      "signature_ok": false
+    },
+    {
+      "number": 187,
+      "label": "ball_014",
+      "load_hp": 2,
+      "rpm": 1749.0,
+      "rpm_ok": true,
+      "peak_hz": 34.7900390625,
+      "expected_hz": 68.70071999999999,
+      "signature_ok": false
+    },
+    {
+      "number": 188,
+      "label": "ball_014",
+      "load_hp": 3,
+      "rpm": 1724.0,
+      "rpm_ok": true,
+      "peak_hz": 34.0576171875,
+      "expected_hz": 67.71871999999999,
+      "signature_ok": false
+    },
+    {
+      "number": 197,
+      "label": "outer_014",
+      "load_hp": 0,
+      "rpm": 1796.0,
+      "rpm_ok": true,
+      "peak_hz": 179.0771484375,
+      "expected_hz": 107.30501333333333,
+      "signature_ok": false
+    },
+    {
+      "number": 198,
+      "label": "outer_014",
+      "load_hp": 1,
+      "rpm": 1772.0,
+      "rpm_ok": true,
+      "peak_hz": 41.3818359375,
+      "expected_hz": 105.87109333333333,
+      "signature_ok": false
+    },
+    {
+      "number": 199,
+      "label": "outer_014",
+      "load_hp": 2,
+      "rpm": 1749.0,
+      "rpm_ok": true,
+      "peak_hz": 40.6494140625,
+      "expected_hz": 104.49691999999999,
+      "signature_ok": false
+    },
+    {
+      "number": 200,
+      "label": "outer_014",
+      "load_hp": 3,
+      "rpm": 1723.0,
+      "rpm_ok": true,
+      "peak_hz": 40.283203125,
+      "expected_hz": 102.94350666666666,
+      "signature_ok": false
+    },
+    {
+      "number": 209,
+      "label": "inner_021",
+      "load_hp": 0,
+      "rpm": 1797.0,
+      "rpm_ok": true,
+      "peak_hz": 161.865234375,
+      "expected_hz": 162.18524,
+      "signature_ok": true
+    },
+    {
+      "number": 210,
+      "label": "inner_021",
+      "load_hp": 1,
+      "rpm": 1774.0,
+      "rpm_ok": true,
+      "peak_hz": 159.66796875,
+      "expected_hz": 160.10941333333332,
+      "signature_ok": true
+    },
+    {
+      "number": 211,
+      "label": "inner_021",
+      "load_hp": 2,
+      "rpm": 1752.0,
+      "rpm_ok": true,
+      "peak_hz": 157.8369140625,
+      "expected_hz": 158.12383999999997,
+      "signature_ok": true
+    },
+    {
+      "number": 212,
+      "label": "inner_021",
+      "load_hp": 3,
+      "rpm": 1728.0,
+      "rpm_ok": true,
+      "peak_hz": 155.6396484375,
+      "expected_hz": 155.95775999999998,
+      "signature_ok": true
+    },
+    {
+      "number": 222,
+      "label": "ball_021",
+      "load_hp": 0,
+      "rpm": 1796.0,
+      "rpm_ok": true,
+      "peak_hz": 161.865234375,
+      "expected_hz": 70.54687999999999,
+      "signature_ok": false
+    },
+    {
+      "number": 223,
+      "label": "ball_021",
+      "load_hp": 1,
+      "rpm": 1774.0,
+      "rpm_ok": true,
+      "peak_hz": 100.7080078125,
+      "expected_hz": 69.68271999999999,
+      "signature_ok": false
+    },
+    {
+      "number": 224,
+      "label": "ball_021",
+      "load_hp": 2,
+      "rpm": 1754.0,
+      "rpm_ok": true,
+      "peak_hz": 99.609375,
+      "expected_hz": 68.89712,
+      "signature_ok": false
+    },
+    {
+      "number": 225,
+      "label": "ball_021",
+      "load_hp": 3,
+      "rpm": 1729.0,
+      "rpm_ok": true,
+      "peak_hz": 98.14453125,
+      "expected_hz": 67.91511999999999,
+      "signature_ok": false
+    },
+    {
+      "number": 234,
+      "label": "outer_021",
+      "load_hp": 0,
+      "rpm": 1796.0,
+      "rpm_ok": true,
+      "peak_hz": 107.666015625,
+      "expected_hz": 107.30501333333333,
+      "signature_ok": true
+    },
+    {
+      "number": 235,
+      "label": "outer_021",
+      "load_hp": 1,
+      "rpm": 1771.0,
+      "rpm_ok": true,
+      "peak_hz": 106.201171875,
+      "expected_hz": 105.81134666666667,
+      "signature_ok": true
+    },
+    {
+      "number": 236,
+      "label": "outer_021",
+      "load_hp": 2,
+      "rpm": 1748.0,
+      "rpm_ok": true,
+      "peak_hz": 104.736328125,
+      "expected_hz": 104.43717333333333,
+      "signature_ok": true
+    },
+    {
+      "number": 237,
+      "label": "outer_021",
+      "load_hp": 3,
+      "rpm": 1721.0,
+      "rpm_ok": true,
+      "peak_hz": 102.9052734375,
+      "expected_hz": 102.82401333333334,
+      "signature_ok": true
+    }
+  ],
+  "hardware": {
+    "platform": "macOS-26.0.1-arm64-arm-64bit",
+    "python": "3.11.13",
+    "torch": "2.15.0",
+    "cpu": "arm",
+    "cpu_count": 8,
+    "cuda": false,
+    "git": "729ee28",
+    "kaggle": false
+  }
+}

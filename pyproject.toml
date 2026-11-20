@@ -21,7 +21,7 @@ dependencies = [
 
 [project.optional-dependencies]
 # Pulled in only where needed so the local (disk-constrained) env stays small.
-data = ["huggingface-hub>=0.23"]
+data = ["huggingface-hub>=0.23", "httpx>=0.27"]
 track = ["mlflow>=2.12"]
 eval = ["statsmodels>=0.14", "scikit-learn>=1.4"]
 export = ["onnx>=1.16", "onnxruntime>=1.18"]

@@ -27,8 +27,8 @@ data-debug:
 data-pretrain:          # run on Kaggle (see kaggle/README.md), not locally: disk
 	$(PY) python scripts/build_corpus.py --selection configs/data/lotsa_selection.yaml \
 		--reference $${REFERENCE_DIR:-data/downstream/reference} --out $${SHARD_OUT:-data/shards/main}
-data-downstream:
-	$(call TODO,Task 1.5)
+data-downstream:        # ~0.6 GB; on Kaggle use DOWNSTREAM_ROOT=/kaggle/working/downstream
+	$(PY) python scripts/prepare_downstream.py --root $${DOWNSTREAM_ROOT:-data/downstream}
 pretrain-debug:
 	$(call TODO,Task 2.3)
 pretrain:
