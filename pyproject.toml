@@ -3,7 +3,7 @@ name = "sensorfm"
 version = "0.1.0"
 description = "Compact patch-based transformer foundation model for sensor time series, trained and deployed on free-tier compute."
 readme = "README.md"
-requires-python = ">=3.11,<3.12"
+requires-python = ">=3.11"  # dev on 3.11; Kaggle images may be newer
 dependencies = [
     "torch>=2.4",
     "numpy>=1.26",

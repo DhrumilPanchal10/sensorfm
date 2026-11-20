@@ -8,7 +8,7 @@ TMP=${TMP_CACHE:-/kaggle/tmp/hf}
 mkdir -p "$WORK" "$TMP"
 
 pip install -q uv
-uv venv -q --python 3.11 .venv || uv venv -q .venv
+uv venv -q --system-site-packages .venv
 uv pip install -q -e ".[data]" --python .venv/bin/python
 PY=.venv/bin/python
 

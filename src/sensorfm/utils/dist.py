@@ -85,7 +85,14 @@ def wrap_model(model: nn.Module, strategy: str, info: DistInfo, precision: str) 
         return DDP(model, device_ids=ids)
     if strategy == "fsdp":
         from torch.distributed.device_mesh import init_device_mesh
-        from torch.distributed.fsdp import MixedPrecisionPolicy, fully_shard
+
+        try:  # torch >= 2.6 public API
+            from torch.distributed.fsdp import MixedPrecisionPolicy, fully_shard
+        except ImportError:  # torch 2.4/2.5 (e.g. an older Kaggle image)
+            from torch.distributed._composable.fsdp import (  # type: ignore[attr-defined]
+                MixedPrecisionPolicy,
+                fully_shard,
+            )
 
         # Explicit mesh: without it fully_shard auto-detects the accelerator, which on macOS
         # picks MPS and crashes (torch.mps.is_initialized missing) even for CPU/gloo runs.

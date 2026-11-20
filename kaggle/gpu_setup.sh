@@ -15,9 +15,9 @@ export GPU_PRICE_PER_HOUR=0
 export MLFLOW_TRACKING_URI=file:/kaggle/working/mlruns
 
 pip install -q uv
-uv venv -q --python 3.11 .venv 2>/dev/null || uv venv -q .venv
-# Kaggle images ship a CUDA torch; install ours with the matching CUDA wheels.
-uv pip install -q --python .venv/bin/python -e ".[data,track]"
+# Reuse the image's CUDA torch (multi-GB) instead of downloading it every session.
+uv venv -q --system-site-packages .venv
+uv pip install -q --python .venv/bin/python -e ".[data,track,eval,export]"
 export PATH="$PWD/.venv/bin:$PATH"
 nvidia-smi --query-gpu=name,memory.total --format=csv
 python -c "import torch;print('torch',torch.__version__,'cuda',torch.version.cuda,'gpus',torch.cuda.device_count())"
