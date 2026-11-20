@@ -72,4 +72,4 @@ markers = [
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"scripts/*" = ["B008"]  # typer.Option in defaults is the typer idiom
+"scripts/*" = ["B008", "RUF001", "E501"]  # typer idiom; × in report text; long f-strings

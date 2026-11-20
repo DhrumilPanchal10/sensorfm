@@ -113,5 +113,5 @@ def pretrain_step(
     """One pretraining loss evaluation. ``forward`` is the (DDP/FSDP/compiled) wrapper to call;
     ``model`` is the underlying SensorFM used for config, heads and target normalization."""
     masked, horizon = make_hide_masks(obs, model.cfg.patch_len, cfg, generator)
-    out = (forward or model)(x, obs, masked | horizon)
+    out = (forward if forward is not None else model)(x, obs, masked | horizon)
     return compute_losses(model, out, x, obs, masked, horizon, cfg)

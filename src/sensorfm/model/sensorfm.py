@@ -34,6 +34,7 @@ class ModelConfig:
     context_length: int = 512
     quantiles: tuple[float, ...] = QUANTILES
     revin_affine: bool = True
+    grad_checkpoint: bool = False
 
     @property
     def n_patches(self) -> int:
@@ -66,7 +67,9 @@ class SensorFM(nn.Module):
         self.embed = nn.Linear(2 * cfg.patch_len, cfg.d_model)
         self.mask_token = nn.Parameter(torch.zeros(cfg.d_model))
         self.pos = nn.Parameter(torch.zeros(1, cfg.n_patches, cfg.d_model))
-        self.encoder = Encoder(cfg.d_model, cfg.n_layers, cfg.n_heads, cfg.mlp_ratio, cfg.dropout)
+        self.encoder = Encoder(
+            cfg.d_model, cfg.n_layers, cfg.n_heads, cfg.mlp_ratio, cfg.dropout, cfg.grad_checkpoint
+        )
         self.recon_head = PatchReconstructionHead(cfg.d_model, cfg.patch_len)
         self.quantile_head = PatchQuantileHead(cfg.d_model, cfg.patch_len, cfg.quantiles)
         self._init_weights()

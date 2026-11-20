@@ -15,6 +15,7 @@ from __future__ import annotations
 import torch
 import torch.nn.functional as F
 from torch import nn
+from torch.utils.checkpoint import checkpoint
 
 
 class Attention(nn.Module):
@@ -57,9 +58,19 @@ class Block(nn.Module):
 
 class Encoder(nn.Module):
     def __init__(
-        self, d_model: int, n_layers: int, n_heads: int, mlp_ratio: int, dropout: float
+        self,
+        d_model: int,
+        n_layers: int,
+        n_heads: int,
+        mlp_ratio: int,
+        dropout: float,
+        grad_checkpoint: bool = False,
     ) -> None:
         super().__init__()
+        # Activation checkpointing: drop block activations in forward, recompute in backward.
+        # Saves memory (~activations of all but one block) for ~1/3 more compute; only worth it
+        # when memory-bound (Task 3.2 decides from measurements).
+        self.grad_checkpoint = grad_checkpoint
         self.blocks = nn.ModuleList(
             Block(d_model, n_heads, mlp_ratio, dropout) for _ in range(n_layers)
         )
@@ -73,5 +84,8 @@ class Encoder(nn.Module):
             eye = torch.eye(n, dtype=torch.bool, device=x.device)
             attn_mask = (key_valid[:, None, None, :] | eye[None, None]).expand(-1, 1, n, n)
         for blk in self.blocks:
-            x = blk(x, attn_mask)
+            if self.grad_checkpoint and self.training:
+                x = checkpoint(blk, x, attn_mask, use_reentrant=False)
+            else:
+                x = blk(x, attn_mask)
         return self.ln_f(x)
