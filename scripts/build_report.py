@@ -90,10 +90,16 @@ def main() -> None:
             ["| Config | Parameters | Non-embedding | Train FLOPs / token |", "|---|---|---|---|"]
             + [f"| {k} | {v['params']:,} | {v['non_embedding_params']:,} | {v['train_flops_per_token']:.3g} |"
                for k, v in pj.items()] if pj else None)  # fmt: skip
-    fb = _load(R / "eval/forecast_baselines.json")
-    section("Forecasting baselines (ETT, H=96, context 512)", R / "eval/forecast_baselines.json",
-            forecast_table(fb) if fb else None,
-            "MASE scaled by in-sample seasonal-naive MAE on the training split; WQL scale-free.")  # fmt: skip
+    fcs = sorted((R / "eval").glob("forecast_*.json"))
+    if not fcs:
+        section("Forecasting (ETT, H=96)", R / "eval/forecast_baselines.json", None)
+    for f in fcs:
+        d = _load(f)
+        assert d is not None
+        section(f"Forecasting — {f.stem.removeprefix('forecast_')} (ETT, H={d['horizon']}, context {d['context']})",
+                f, forecast_table(d),
+                "MASE scaled by in-sample seasonal-naive MAE on the training split; WQL scale-free. "
+                "SensorFM sees context_length − H points.")  # fmt: skip
     cb = _load(R / "eval/cmapss_baselines.json")
     section("C-MAPSS classic baselines (W=30, 3 seeds)", R / "eval/cmapss_baselines.json",
             rul_table(cb) if cb else None,

@@ -11,7 +11,7 @@
 
 <sub>Source: `results/model/params.json`</sub>
 
-### Forecasting baselines (ETT, H=96, context 512)
+### Forecasting (ETT, H=96)
 
 *Pending — `results/eval/forecast_baselines.json` not produced yet.*
 
