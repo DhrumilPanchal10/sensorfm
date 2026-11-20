@@ -116,6 +116,17 @@ def main() -> None:
             section(f"UCR anomaly — {d['tag']}", f,
                     [f"- accuracy {d['accuracy']:.3f} on {d['n_series']} series "
                      f"(archive scoring rule; prefix fine-tune steps: {d['finetune_steps']})"])  # fmt: skip
+    for f in sorted((R / "eval").glob("bearing_*.json")):
+        d = _load(f)
+        if d:
+            lines = [
+                "| Regime | macro-F1 (10 classes) | macro-F1 (no ball) | accuracy |",
+                "|---|---|---|---|",
+            ]
+            lines += [f"| {k} | {v['macro_f1']['mean']:.3f} ± {v['macro_f1']['std']:.3f} | "
+                      f"{v['macro_f1_no_ball']['mean']:.3f} ± {v['macro_f1_no_ball']['std']:.3f} | "
+                      f"{v['accuracy']['mean']:.3f} |" for k, v in d["summary"].items()]  # fmt: skip
+            section(f"CWRU bearings — {d['tag']} (leave-one-load-out)", f, lines)
     an = _load(R / "eval/rul_analysis.json")
     if an and an["comparisons"]:
         lines = [
