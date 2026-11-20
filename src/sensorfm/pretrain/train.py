@@ -34,7 +34,6 @@ from sensorfm.pretrain.schedule import lr_lambda, make_optimizer
 from sensorfm.utils.dist import (
     DistInfo,
     all_reduce_mean,
-    barrier,
     cleanup,
     init_distributed,
     maybe_no_sync,
@@ -130,14 +129,12 @@ def run(cfg: DictConfig) -> dict[str, Any]:
         last = ckpt.latest(out_dir / "checkpoints")
         if last is None:
             raise FileNotFoundError(f"resume=true but no checkpoint in {out_dir / 'checkpoints'}")
-        state = ckpt.load(last, info.device)
-        ckpt.check_fingerprint(state["fingerprint"], fingerprint)
-        core.load_state_dict(state["model"])
-        opt.load_state_dict(state["optimizer"])
-        sched.load_state_dict(state["scheduler"])
-        scaler.load_state_dict(state["scaler"])
-        step = int(state["step"])
-        ckpt.set_rng_state(state["rng"])
+        meta = torch.load(last / "meta.pt", map_location="cpu", weights_only=False)
+        ckpt.check_fingerprint(meta["fingerprint"], fingerprint)
+        ckpt.load(last, model, opt, info, sharded=tc.strategy == "fsdp" and info.distributed)
+        sched.load_state_dict(meta["scheduler"])
+        scaler.load_state_dict(meta["scaler"])
+        step = int(meta["step"])
         resumed_from = str(last)
 
     manifest = load_manifest(Path(cfg.data.shard_dir))
@@ -246,25 +243,31 @@ def run(cfg: DictConfig) -> dict[str, Any]:
             acc, acc_n = {}, 0
             t_log = time.perf_counter()
 
-        over_time = cfg.max_wall_minutes and (time.time() - t_start) > 60 * cfg.max_wall_minutes
+        over_time = False
+        if cfg.max_wall_minutes and log_now:  # checked on log steps only: it forces a sync
+            local = (time.time() - t_start) > 60 * cfg.max_wall_minutes
+            # Same decision on every rank (clocks differ slightly), otherwise ranks deadlock.
+            over_time = bool(all_reduce_mean(torch.tensor(float(local), device=info.device)) > 0)
+        early_stop = bool(tc.get("stop_at_step", 0)) and step >= tc.stop_at_step
+        over_time = over_time or early_stop
         if step % tc.ckpt_every == 0 or step == tc.max_steps or over_time:
-            if info.is_main:
-                ckpt.save(
-                    out_dir / "checkpoints",
-                    step,
-                    {
-                        "model": core.state_dict(),
-                        "optimizer": opt.state_dict(),
-                        "scheduler": sched.state_dict(),
-                        "scaler": scaler.state_dict(),
-                        "fingerprint": fingerprint,
-                        "model_config": mcfg.__dict__,
-                    },
-                    tc.keep_last,
-                )
-            barrier()
+            ckpt.save(
+                out_dir / "checkpoints",
+                step,
+                model,
+                opt,
+                {
+                    "scheduler": sched.state_dict(),
+                    "scaler": scaler.state_dict(),
+                    "fingerprint": fingerprint,
+                    "model_config": mcfg.__dict__,
+                },
+                info,
+                sharded=tc.strategy == "fsdp" and info.distributed,
+                keep_last=tc.keep_last,
+            )
         if over_time:
-            stop_reason = "wall_clock"
+            stop_reason = "stop_at_step" if early_stop else "wall_clock"
             break
 
     summary = {

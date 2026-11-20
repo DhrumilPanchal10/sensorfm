@@ -20,3 +20,4 @@ val_batches: 4
 ckpt_every: 100
 keep_last: 2
 device: cpu
+stop_at_step: 0       # >0: checkpoint and exit after this step (schedule still uses max_steps)

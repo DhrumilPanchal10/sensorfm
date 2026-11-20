@@ -66,7 +66,6 @@ def test_sigkill_and_resume_matches_uninterrupted_run(tmp_path: Path, shards: Pa
     assert killed_after < MAX_STEPS
     assert proc.returncode == -signal.SIGKILL
     assert not (crash / "summary.json").exists()
-    assert not list((crash / "checkpoints").glob("*.tmp")) or True  # tmp may exist; never loaded
 
     t0 = time.time()
     _run(_cmd(crash, shards, "resume=true"))
@@ -74,8 +73,7 @@ def test_sigkill_and_resume_matches_uninterrupted_run(tmp_path: Path, shards: Pa
 
     summary = json.loads((crash / "summary.json").read_text())
     assert summary["final_step"] == MAX_STEPS
-    assert summary["resumed_from"].endswith(".pt")
-    resumed_step = int(Path(summary["resumed_from"]).stem.split("_")[1])
+    resumed_step = int(Path(summary["resumed_from"]).name.split("_")[1])
     assert resumed_step % 10 == 0 and resumed_step <= killed_after
 
     a, b = read_metrics(ref / "metrics.jsonl"), read_metrics(crash / "metrics.jsonl")

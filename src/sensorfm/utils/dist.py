@@ -84,16 +84,20 @@ def wrap_model(model: nn.Module, strategy: str, info: DistInfo, precision: str) 
         ids = [info.local_rank] if info.device.type == "cuda" else None
         return DDP(model, device_ids=ids)
     if strategy == "fsdp":
+        from torch.distributed.device_mesh import init_device_mesh
         from torch.distributed.fsdp import MixedPrecisionPolicy, fully_shard
 
+        # Explicit mesh: without it fully_shard auto-detects the accelerator, which on macOS
+        # picks MPS and crashes (torch.mps.is_initialized missing) even for CPU/gloo runs.
+        mesh = init_device_mesh(info.device.type, (info.world_size,))
         dtype = {"bf16": torch.bfloat16, "fp16": torch.float16}.get(precision)
         mp = MixedPrecisionPolicy(param_dtype=dtype, reduce_dtype=torch.float32) if dtype else None
         blocks: Any = getattr(model, "encoder").blocks  # noqa: B009
         for blk in [*blocks, model]:
             if mp is not None:
-                fully_shard(blk, mp_policy=mp)
+                fully_shard(blk, mesh=mesh, mp_policy=mp)
             else:
-                fully_shard(blk)
+                fully_shard(blk, mesh=mesh)
         return model
     raise ValueError(f"unknown strategy {strategy!r}")
 
