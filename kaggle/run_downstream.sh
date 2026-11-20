@@ -14,4 +14,9 @@ python scripts/eval_rul.py --tag "${TAG}_pre" --ckpt "$CKPT" --root "$DOWNSTREAM
 python scripts/eval_rul.py --tag "${TAG}_scratch" --model "$MODEL" --root "$DOWNSTREAM_ROOT/cmapss"
 python scripts/eval_forecast_baselines.py --methods sensorfm,chronos2,chronos_bolt_small \
   --ckpt "$CKPT" --root "$DOWNSTREAM_ROOT/ett" --out "results/eval/forecast_${TAG}.json"
+python scripts/eval_ucr.py --ckpt "$CKPT" --tag "${TAG}_zeroshot" --root "$DOWNSTREAM_ROOT/ucr"
+python scripts/eval_ucr.py --ckpt "$CKPT" --tag "${TAG}_prefix200" --finetune-steps 200 --root "$DOWNSTREAM_ROOT/ucr"
+python scripts/analyze_rul.py results/eval/cmapss_baselines.json "results/eval/rul_${TAG}_pre.json" \
+  "results/eval/rul_${TAG}_scratch.json" --compare "${TAG}_pre/full:${TAG}_scratch/full" \
+  --compare "${TAG}_pre/few_shot:${TAG}_scratch/few_shot" --compare "${TAG}_pre/full:gbm"
 mkdir -p /kaggle/working/results && cp -r results/. /kaggle/working/results/

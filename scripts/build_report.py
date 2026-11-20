@@ -98,9 +98,35 @@ def main() -> None:
     section("C-MAPSS classic baselines (W=30, 3 seeds)", R / "eval/cmapss_baselines.json",
             rul_table(cb) if cb else None,
             "Official last-cycle test RUL (uncapped); validation split by engine unit.")  # fmt: skip
+    cf = _load(R / "eval/cmapss_baselines_fewshot10.json")
+    section(
+        "C-MAPSS classic baselines, few-shot (10% of training units)",
+        R / "eval/cmapss_baselines_fewshot10.json",
+        rul_table(cf) if cf else None,
+    )
+    for f in sorted((R / "eval").glob("ucr_*.json")):
+        d = _load(f)
+        if d and d["tag"] != "smoke":
+            section(f"UCR anomaly — {d['tag']}", f,
+                    [f"- accuracy {d['accuracy']:.3f} on {d['n_series']} series "
+                     f"(archive scoring rule; prefix fine-tune steps: {d['finetune_steps']})"])  # fmt: skip
+    an = _load(R / "eval/rul_analysis.json")
+    if an and an["comparisons"]:
+        lines = [
+            "| Subset | A | B | RMSE A | RMSE B | A−B (95% CI) | significant |",
+            "|---|---|---|---|---|---|---|",
+        ]
+        lines += [f"| {c['subset']} | {c['a']} | {c['b']} | {c['rmse_a']:.2f} | {c['rmse_b']:.2f} | "
+                  f"{c['diff']:+.2f} [{c['ci95'][0]:+.2f}, {c['ci95'][1]:+.2f}] | {'yes' if c['significant'] else 'no'} |"
+                  for c in an["comparisons"]]  # fmt: skip
+        section(
+            "RUL paired comparisons (bootstrap over engines, seed-averaged predictions)",
+            R / "eval/rul_analysis.json",
+            lines,
+        )
     for f in sorted((R / "eval").glob("rul_*.json")):
         d = _load(f)
-        if d and not d["tag"].startswith("sanity"):
+        if d and "tag" in d and not d["tag"].startswith("sanity"):
             section(
                 f"SensorFM RUL — {d['tag']}",
                 f,

@@ -19,6 +19,10 @@
 
 *Pending — `results/eval/cmapss_baselines.json` not produced yet.*
 
+### C-MAPSS classic baselines, few-shot (10% of training units)
+
+*Pending — `results/eval/cmapss_baselines_fewshot10.json` not produced yet.*
+
 ### Scaling (Kaggle T4)
 
 *Pending — `results/scaling` not produced yet.*
