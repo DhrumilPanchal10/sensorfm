@@ -1,0 +1,28 @@
+{
+  "context_length": 512,
+  "batch_size": 64,
+  "batches": 200,
+  "root": "data/shards/debug",
+  "results": [
+    {
+      "num_workers": 0,
+      "samples_per_s": 77953.9,
+      "per_worker": 77953.9
+    },
+    {
+      "num_workers": 2,
+      "samples_per_s": 121799.9,
+      "per_worker": 60899.9
+    }
+  ],
+  "hardware": {
+    "platform": "macOS-26.0.1-arm64-arm-64bit",
+    "python": "3.11.13",
+    "torch": "2.15.0",
+    "cpu": "arm",
+    "cpu_count": 8,
+    "cuda": false,
+    "git": "bf1b8c2",
+    "kaggle": false
+  }
+}

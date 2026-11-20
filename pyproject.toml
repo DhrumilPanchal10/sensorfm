@@ -47,7 +47,7 @@ src = ["src", "tests"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "N"]
-ignore = ["N812"]  # `import torch.nn.functional as F` is idiomatic
+ignore = ["N812", "N806", "N803"]  # F alias; math names (L, H, N) as in the paper notation
 
 [tool.mypy]
 python_version = "3.11"
