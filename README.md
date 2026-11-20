@@ -89,7 +89,7 @@ forecasting dataset.
 
 ### Crash-resume test (CPU)
 
-- killed after step 25, resumed from 20 (5 steps lost); first new step 0.95 s after restart; all logged losses identical to the uninterrupted run.
+- killed after step 25, resumed from 20 (5 steps lost); first new step 1.40 s after restart; all logged losses identical to the uninterrupted run.
 
 <sub>Source: `results/resume_test.json`</sub>
 
