@@ -4,22 +4,27 @@ on:
     branches: [main]
   pull_request:
 
+env:
+  UV_NO_SYNC: "1"          # `uv run` must not re-resolve and pull the CUDA torch wheel
+  GLOO_SOCKET_IFNAME: lo   # distributed CPU tests (gloo) on the loopback interface
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
-      - name: Install (CPU torch)
+      - name: Install (CPU torch + all CPU-testable extras)
         run: |
           uv venv --python 3.11
           uv pip install torch --index-url https://download.pytorch.org/whl/cpu
-          uv sync --group dev --inexact
-      - name: Lint
+          uv pip install -e ".[data,eval,export,serve]" pytest ruff mypy pandas-stubs scipy-stubs types-pyyaml
+      - name: Lint + types
         run: make lint
       - name: Build debug shards
         run: make data-debug
-      - name: Test (incl. slow crash-resume integration test)
+      - name: Tests (incl. crash-resume, DDP/FSDP2 parity + resume, export, serving)
         run: make test-all
       - name: Pretrain debug (CPU, tiny, synthetic)
         run: make pretrain-debug
