@@ -118,7 +118,7 @@ def fit_predict_torch(
             out = torch.cat([model(T(x[i : i + 2048]), T(m[i : i + 2048].astype(np.float32)))
                              for i in range(0, len(x), 2048)])  # fmt: skip
         model.train()
-        return np.clip(out.numpy(), 0, RUL_CAP).astype(np.float32)
+        return np.clip(out.numpy() * RUL_CAP, 0, RUL_CAP).astype(np.float32)
 
     best_rmse, best_state, bad, epochs_run = np.inf, None, 0, 0
     for _epoch in range(cfg.epochs):
@@ -126,7 +126,9 @@ def fit_predict_torch(
         perm = torch.randperm(len(xtr_t), generator=g)
         for i in range(0, len(perm), cfg.batch):
             idx = perm[i : i + cfg.batch]
-            loss = nn.functional.mse_loss(model(xtr_t[idx], mtr_t[idx]), ytr_t[idx])
+            # Targets scaled to ~[0, 1]: raw 0-125 targets saturate the tanh CNN (a seed collapsed to
+            # a constant) and slow the LSTM — an unfairly weak baseline. Same scaling as SensorFM.
+            loss = nn.functional.mse_loss(model(xtr_t[idx], mtr_t[idx]), ytr_t[idx] / RUL_CAP)
             opt.zero_grad()
             loss.backward()
             opt.step()
