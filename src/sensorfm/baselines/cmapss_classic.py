@@ -126,8 +126,8 @@ def fit_predict_torch(
         perm = torch.randperm(len(xtr_t), generator=g)
         for i in range(0, len(perm), cfg.batch):
             idx = perm[i : i + cfg.batch]
-            # Targets scaled to ~[0, 1]: raw 0-125 targets saturate the tanh CNN (a seed collapsed to
-            # a constant) and slow the LSTM — an unfairly weak baseline. Same scaling as SensorFM.
+            # Targets scaled to ~[0, 1]: raw 0-125 targets saturate the tanh CNN (a seed collapsed
+            # to a constant) and slow the LSTM: an unfairly weak baseline. Same scaling as SensorFM.
             loss = nn.functional.mse_loss(model(xtr_t[idx], mtr_t[idx]), ytr_t[idx] / RUL_CAP)
             opt.zero_grad()
             loss.backward()
