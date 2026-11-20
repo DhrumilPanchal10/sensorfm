@@ -50,7 +50,10 @@ def main(
                             FitCfg(epochs=epochs))  # fmt: skip
                 r["regime"] = regime
                 runs.append(r)
-                print(json.dumps(r), flush=True)
+                print(
+                    json.dumps({k: v for k, v in r.items() if k not in ("pred", "true")}),
+                    flush=True,
+                )
     summary = {}
     for fd in subsets.split(","):
         for regime in regimes.split(","):

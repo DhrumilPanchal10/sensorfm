@@ -61,12 +61,19 @@ def main(
                     pred, info = fit_predict_torch(
                         model, xtr, mtr, ytr, xva, mva, yva, xte, mte, seed
                     )
-                run = {"subset": fd, "seed": seed, "method": method, "n_train_units": len(tr_u),
-                       "rmse": rmse(pred, yte), "nasa": nasa_score(pred, yte),
-                       "rmse_capped_target": rmse(pred, yte_cap), "seconds": round(time.time() - t0, 1),
-                       **info}  # fmt: skip
+                run = {
+                    "subset": fd, "seed": seed, "method": method, "n_train_units": len(tr_u),
+                    "rmse": rmse(pred, yte), "nasa": nasa_score(pred, yte),
+                    "rmse_capped_target": rmse(pred, yte_cap),
+                    "seconds": round(time.time() - t0, 1), **info,
+                    # per-unit test predictions: needed for paired bootstrap + error analysis
+                    "pred": [round(float(v), 3) for v in pred], "true": [float(v) for v in yte],
+                }  # fmt: skip
                 res["runs"].append(run)
-                print(json.dumps(run), flush=True)
+                print(
+                    json.dumps({k: v for k, v in run.items() if k not in ("pred", "true")}),
+                    flush=True,
+                )
     summary: dict[str, Any] = {}
     for fd in subsets.split(","):
         for method in methods.split(","):

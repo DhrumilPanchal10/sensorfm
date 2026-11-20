@@ -70,4 +70,5 @@ def run_rul(
         "few_shot_frac": few_shot or None, "n_train_units": len(tr_u), "window": window,
         "rmse": rmse(pred, yte), "nasa": nasa_score(pred, yte),
         "rmse_capped_target": rmse(pred, np.minimum(yte, cmapss.RUL_CAP)), **info,
+        "pred": [round(float(v), 3) for v in pred], "true": [float(v) for v in yte],
     }  # fmt: skip
