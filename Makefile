@@ -37,15 +37,15 @@ finetune:
 	$(call TODO,Task 4.2)
 eval:
 	$(call TODO,Task 4.3)
-profile:
-	$(call TODO,Task 3.1)
-scale:
-	$(call TODO,Task 3.3)
+profile:                # ladder + traces (GPU: kaggle/run_ladder.sh); CPU smoke here
+	$(PY) python -m sensorfm.pretrain.bench --steps 40 --warmup 5 --micro-batch 16 --profile
+scale:                  # GPU only: kaggle/run_scaling.sh
+	@echo "run kaggle/run_scaling.sh on a Kaggle T4 x2 session" && exit 1
 export:
 	$(call TODO,Task 5.1)
 bench:
 	$(call TODO,Task 5.2)
 serve:                  # SENSORFM_MODEL=path/to/model.onnx SENSORFM_TASK=rul|forecast
 	$(PY) uvicorn sensorfm.serving.app:app --port 8000
-report:
-	$(call TODO,Phase 6)
+report:                 # regenerate README results block + docs/reports from results/
+	$(PY) python scripts/build_report.py

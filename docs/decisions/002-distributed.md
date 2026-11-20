@@ -35,8 +35,9 @@
 
 ## Evidence (CPU, gloo, 2 processes; `tests/integration/test_dist.py`)
 
-- Loss per step for DDP and FSDP2 vs single process on the same global batch: max |Δ| = 1.2e-7
-  over 10 steps (`results/scaling/parity_cpu_gloo.json`).
+- Loss per step for DDP and FSDP2 vs single process on the same global batch agrees to float
+  rounding (test threshold 1e-5); the measured max |Δ| is in `results/scaling/parity_cpu_gloo.json`
+  and the generated README table (not copied here, so it can't go stale).
 - Stop at step 20 → resume → steps 21–30 match an uninterrupted run (rel 1e-6), for both DDP and
   FSDP2 (sharded DCP checkpoint).
 - macOS gloo needs `GLOO_SOCKET_IFNAME=lo0` and `--master_addr=127.0.0.1`, otherwise rendezvous
