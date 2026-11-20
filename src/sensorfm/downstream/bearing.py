@@ -128,25 +128,30 @@ def make_windows(
     return out
 
 
+def load_windows(
+    root: str | Path, loads: tuple[int, ...], length: int = 2048
+) -> tuple[npt.NDArray[np.float32], npt.NDArray[np.int64]]:
+    """Windows + integer labels of every recording at the given motor loads."""
+    xs, ys = [], []
+    for n, (label, load) in sorted(FILES.items()):
+        if load not in loads:
+            continue
+        path = Path(root) / f"{n}.mat"
+        if not path.exists():
+            raise FileNotFoundError(f"missing CWRU file {path}; run scripts/prepare_downstream.py")
+        w = make_windows(load_recording(path, n), length)
+        xs.append(w)
+        ys.append(np.full(len(w), CLASSES.index(label), dtype=np.int64))
+    return np.concatenate(xs), np.concatenate(ys)
+
+
 def load_split(
     root: str | Path, train_loads: tuple[int, ...], test_loads: tuple[int, ...], length: int = 2048
 ) -> dict[str, tuple[npt.NDArray[np.float32], npt.NDArray[np.int64]]]:
     """Windows + integer labels for train/test, split by load (no recording in both)."""
     if set(train_loads) & set(test_loads):
         raise ValueError("train and test loads overlap — that leaks recordings")
-    out: dict[str, tuple[npt.NDArray[np.float32], npt.NDArray[np.int64]]] = {}
-    for name, loads in (("train", train_loads), ("test", test_loads)):
-        xs, ys = [], []
-        for n, (label, load) in sorted(FILES.items()):
-            if load not in loads:
-                continue
-            path = Path(root) / f"{n}.mat"
-            if not path.exists():
-                raise FileNotFoundError(
-                    f"missing CWRU file {path}; run scripts/prepare_downstream.py"
-                )
-            w = make_windows(load_recording(path, n), length)
-            xs.append(w)
-            ys.append(np.full(len(w), CLASSES.index(label), dtype=np.int64))
-        out[name] = (np.concatenate(xs), np.concatenate(ys))
-    return out
+    return {
+        "train": load_windows(root, train_loads, length),
+        "test": load_windows(root, test_loads, length),
+    }

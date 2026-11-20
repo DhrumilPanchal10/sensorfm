@@ -17,8 +17,14 @@ def num_patches(length: int, patch_len: int, stride: int) -> int:
 
 
 def patchify(x: torch.Tensor, patch_len: int, stride: int) -> torch.Tensor:
-    """(B, L) -> (B, N, P)."""
-    num_patches(x.shape[-1], patch_len, stride)
+    """(B, L) -> (B, N, P).
+
+    Non-overlapping patches (the only kind the model uses) are a pure reshape: no copy, and it
+    exports to ONNX/TensorRT with dynamic batch (``unfold`` does not, in the TorchScript exporter).
+    """
+    n = num_patches(x.shape[-1], patch_len, stride)
+    if stride == patch_len:
+        return x.reshape(*x.shape[:-1], n, patch_len)
     return x.unfold(-1, patch_len, stride)
 
 

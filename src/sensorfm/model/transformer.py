@@ -71,6 +71,7 @@ class Encoder(nn.Module):
         # Saves memory (~activations of all but one block) for ~1/3 more compute; only worth it
         # when memory-bound (Task 3.2 decides from measurements).
         self.grad_checkpoint = grad_checkpoint
+        self.export_mode = False
         self.blocks = nn.ModuleList(
             Block(d_model, n_heads, mlp_ratio, dropout) for _ in range(n_layers)
         )
@@ -79,9 +80,13 @@ class Encoder(nn.Module):
     def forward(self, x: torch.Tensor, key_valid: torch.Tensor | None = None) -> torch.Tensor:
         """``x`` (B, N, D); ``key_valid`` (B, N) bool — False for fully padded tokens."""
         attn_mask = None
-        if key_valid is not None and not bool(key_valid.all()):
+        # ``bool(key_valid.all())`` is data-dependent control flow (a host sync, a graph break
+        # under torch.compile, and untraceable for ONNX). In export mode the mask is always
+        # built; an all-True mask is mathematically identical to no mask.
+        if key_valid is not None and (self.export_mode or not bool(key_valid.all())):
             n = x.shape[1]
-            eye = torch.eye(n, dtype=torch.bool, device=x.device)
+            idx = torch.arange(n, device=x.device)
+            eye = idx[:, None] == idx[None, :]  # bool identity; ORT has no bool EyeLike kernel
             attn_mask = (key_valid[:, None, None, :] | eye[None, None]).expand(-1, 1, n, n)
         for blk in self.blocks:
             if self.grad_checkpoint and self.training:
