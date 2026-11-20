@@ -11,9 +11,16 @@
 
 <sub>Source: `results/model/params.json`</sub>
 
-### Forecasting (ETT, H=96)
+### Forecasting — baselines (ETT, H=96, context 512)
 
-*Pending — `results/eval/forecast_baselines.json` not produced yet.*
+MASE scaled by in-sample seasonal-naive MAE on the training split; WQL scale-free. SensorFM sees context_length − H points.
+
+| Method | ETTh1 MASE | ETTh2 MASE | ETTm1 MASE | ETTm2 MASE | mean MASE | gmean MASE | mean WQL | fallbacks |
+|---|---|---|---|---|---|---|---|---|
+| seasonal_naive | 1.084 | 1.292 | 0.950 | 1.037 | 1.091 | 1.044 | 0.328 | 0/2100 |
+| ets | 1.111 | 1.256 | 1.644 | 0.944 | 1.239 | 1.077 | 0.394 | 0/2100 |
+
+<sub>Source: `results/eval/forecast_baselines.json`</sub>
 
 ### C-MAPSS classic baselines (W=30, 3 seeds)
 
