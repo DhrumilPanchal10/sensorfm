@@ -85,6 +85,11 @@ def main() -> None:
                 [*([note, ""] if note else []), *lines, "", f"<sub>Source: `{src}`</sub>", ""]
             )
 
+    pj = _load(R / "model/params.json")
+    section("Model sizes", R / "model/params.json",
+            ["| Config | Parameters | Non-embedding | Train FLOPs / token |", "|---|---|---|---|"]
+            + [f"| {k} | {v['params']:,} | {v['non_embedding_params']:,} | {v['train_flops_per_token']:.3g} |"
+               for k, v in pj.items()] if pj else None)  # fmt: skip
     fb = _load(R / "eval/forecast_baselines.json")
     section("Forecasting baselines (ETT, H=96, context 512)", R / "eval/forecast_baselines.json",
             forecast_table(fb) if fb else None,

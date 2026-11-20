@@ -1,5 +1,16 @@
 # Results (generated)
 
+### Model sizes
+
+| Config | Parameters | Non-embedding | Train FLOPs / token |
+|---|---|---|---|
+| tiny | 114,722 | 112,674 | 7.01e+05 |
+| s20m | 14,283,426 | 14,271,138 | 8.62e+07 |
+| m60m | 50,555,042 | 50,538,658 | 3.05e+08 |
+| l150m | 127,756,962 | 127,732,386 | 7.69e+08 |
+
+<sub>Source: `results/model/params.json`</sub>
+
 ### Forecasting baselines (ETT, H=96, context 512)
 
 *Pending — `results/eval/forecast_baselines.json` not produced yet.*
