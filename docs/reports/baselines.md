@@ -24,11 +24,58 @@ MASE scaled by in-sample seasonal-naive MAE on the training split; WQL scale-fre
 
 ### C-MAPSS classic baselines (W=30, 3 seeds)
 
-*Pending — `results/eval/cmapss_baselines.json` not produced yet.*
+Official last-cycle test RUL (uncapped); validation split by engine unit.
+
+| Subset | Model | RMSE (mean ± std) | NASA score (mean ± std) |
+|---|---|---|---|
+| FD001 | gbm | 14.62 ± 0.07 | 309 ± 0 |
+| FD001 | lstm | 15.76 ± 0.57 | 499 ± 111 |
+| FD001 | cnn | 15.15 ± 0.03 | 408 ± 11 |
+| FD002 | gbm | 26.42 ± 0.02 | 7408 ± 99 |
+| FD002 | lstm | 26.42 ± 0.51 | 9070 ± 1158 |
+| FD002 | cnn | 27.53 ± 0.38 | 11417 ± 1573 |
+| FD003 | gbm | 14.90 ± 0.03 | 445 ± 3 |
+| FD003 | lstm | 16.36 ± 0.95 | 761 ± 299 |
+| FD003 | cnn | 15.94 ± 0.27 | 518 ± 52 |
+| FD004 | gbm | 26.80 ± 0.09 | 4636 ± 51 |
+| FD004 | lstm | 27.12 ± 0.42 | 6684 ± 2134 |
+| FD004 | cnn | 28.62 ± 0.23 | 6313 ± 387 |
+
+<sub>Source: `results/eval/cmapss_baselines.json`</sub>
 
 ### C-MAPSS classic baselines, few-shot (10% of training units)
 
-*Pending — `results/eval/cmapss_baselines_fewshot10.json` not produced yet.*
+| Subset | Model | RMSE (mean ± std) | NASA score (mean ± std) |
+|---|---|---|---|
+| FD001 | gbm | 19.39 ± 0.75 | 941 ± 98 |
+| FD001 | lstm | 21.78 ± 1.19 | 1309 ± 220 |
+| FD001 | cnn | 19.64 ± 1.37 | 1043 ± 577 |
+| FD002 | gbm | 28.22 ± 0.32 | 14974 ± 3508 |
+| FD002 | lstm | 29.31 ± 0.41 | 12826 ± 2091 |
+| FD002 | cnn | 28.88 ± 0.08 | 12906 ± 1522 |
+| FD003 | gbm | 18.90 ± 2.17 | 2015 ± 1381 |
+| FD003 | lstm | 24.32 ± 1.59 | 4370 ± 3339 |
+| FD003 | cnn | 24.85 ± 1.26 | 6162 ± 5423 |
+| FD004 | gbm | 28.26 ± 0.19 | 5919 ± 335 |
+| FD004 | lstm | 31.24 ± 0.97 | 8229 ± 1204 |
+| FD004 | cnn | 30.82 ± 0.54 | 8826 ± 573 |
+
+<sub>Source: `results/eval/cmapss_baselines_fewshot10.json`</sub>
+
+### RUL paired comparisons (bootstrap over engines, seed-averaged predictions)
+
+| Subset | A | B | RMSE A | RMSE B | A−B (95% CI) | significant |
+|---|---|---|---|---|---|---|
+| FD001 | lstm | gbm | 15.29 | 14.60 | +0.69 [-0.96, +2.22] | no |
+| FD002 | lstm | gbm | 26.21 | 26.38 | -0.17 [-1.14, +0.76] | no |
+| FD003 | lstm | gbm | 15.41 | 14.89 | +0.51 [-1.46, +2.50] | no |
+| FD004 | lstm | gbm | 26.86 | 26.79 | +0.07 [-0.93, +1.06] | no |
+| FD001 | cnn | gbm | 14.76 | 14.60 | +0.16 [-1.62, +1.88] | no |
+| FD002 | cnn | gbm | 27.25 | 26.38 | +0.86 [-0.17, +1.92] | no |
+| FD003 | cnn | gbm | 15.61 | 14.89 | +0.72 [-1.80, +3.31] | no |
+| FD004 | cnn | gbm | 28.37 | 26.79 | +1.58 [+0.66, +2.57] | yes |
+
+<sub>Source: `results/eval/rul_analysis.json`</sub>
 
 ### Scaling (Kaggle T4)
 

@@ -37,19 +37,24 @@ class PairedResult:
 def paired_bootstrap(
     a: npt.ArrayLike,
     b: npt.ArrayLike,
-    aggregate: Callable[[F64], float] = lambda v: float(np.mean(v)),
+    aggregate: Callable[[F64], float] | None = None,
     n_boot: int = 10_000,
     seed: int = 0,
     alpha: float = 0.05,
 ) -> PairedResult:
     """``a``/``b``: per-unit values (e.g. squared errors or per-series MASE), aligned by unit."""
+    aggregate = aggregate or mean_agg
     x, y = np.asarray(a, np.float64), np.asarray(b, np.float64)
     if x.shape != y.shape or x.ndim != 1:
         raise ValueError("a and b must be 1-D and aligned per unit")
     n = len(x)
     rng = np.random.default_rng(seed)
     idx = rng.integers(0, n, size=(n_boot, n))
-    diffs = np.array([aggregate(x[i]) - aggregate(y[i]) for i in idx])
+    vec = _VECTORIZED.get(aggregate)
+    if vec is not None:  # all resamples at once: (n_boot, n) gather + row reduction
+        diffs = vec(x[idx]) - vec(y[idx])
+    else:
+        diffs = np.array([aggregate(x[i]) - aggregate(y[i]) for i in idx])
     lo, hi = np.quantile(diffs, [alpha / 2, 1 - alpha / 2])
     return PairedResult(aggregate(x) - aggregate(y), float(lo), float(hi),
                         float(np.mean(diffs < 0)), n)  # fmt: skip
@@ -57,3 +62,13 @@ def paired_bootstrap(
 
 def rmse_from_sq(v: F64) -> float:
     return float(np.sqrt(np.mean(v)))
+
+
+def mean_agg(v: F64) -> float:
+    return float(np.mean(v))
+
+
+_VECTORIZED: dict[Callable[[F64], float], Callable[[F64], F64]] = {
+    mean_agg: lambda m: m.mean(axis=1),
+    rmse_from_sq: lambda m: np.sqrt(m.mean(axis=1)),
+}
