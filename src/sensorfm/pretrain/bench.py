@@ -112,7 +112,7 @@ def run_rung(
         g = torch.Generator().manual_seed(seed * 100_003 + i)
         with amp:
             losses = pretrain_step(core, x, obs, obj, g, fwd)
-        scaler.scale(losses["total"]).backward()  # type: ignore[no-untyped-call]
+        scaler.scale(losses["total"]).backward()
         scaler.unscale_(opt)
         torch.nn.utils.clip_grad_norm_(core.parameters(), 1.0)
         scaler.step(opt)

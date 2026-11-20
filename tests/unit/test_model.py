@@ -158,3 +158,19 @@ def test_model_yaml_configs_build(name: str) -> None:
     assert raw["name"] == name and isinstance(raw["d_model"], int)
     with torch.device("meta"):
         SensorFM(ModelConfig(**raw))
+
+
+def test_short_inputs_use_right_aligned_positions() -> None:
+    torch.manual_seed(0)
+    m = SensorFM(TINY).eval()
+    x, obs = _batch(b=2, length=128)
+    # A 32-point input must equal the same 32 points left-padded to the full context (fully
+    # padded patches are excluded as attention keys, so they cannot influence the result).
+    short = m(x[:, -32:], obs[:, -32:])
+    obs_pad = obs.clone()
+    obs_pad[:, :-32] = False
+    full = m(x * obs_pad, obs_pad)
+    assert torch.allclose(short.hidden, full.hidden[:, -2:], atol=1e-5)
+    assert m.features(x[:, -32:], obs[:, -32:]).shape == (2, TINY.d_model + 2)
+    with pytest.raises(ValueError):
+        m(x[:, :20], obs[:, :20])

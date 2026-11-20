@@ -88,9 +88,12 @@ class SensorFM(nn.Module):
     ) -> ModelOutput:
         cfg = self.cfg
         b, length = x.shape
-        if length != cfg.context_length:
-            raise ValueError(f"expected length {cfg.context_length}, got {length}")
-        n = cfg.n_patches
+        if length > cfg.context_length or length % cfg.patch_len:
+            raise ValueError(
+                f"length must be a multiple of {cfg.patch_len} and <= {cfg.context_length}, "
+                f"got {length}"
+            )
+        n = length // cfg.patch_len
         if hide is None:
             hide = torch.zeros(b, n, dtype=torch.bool, device=x.device)
         hide_pts = hide.repeat_interleave(cfg.patch_len, dim=1)
@@ -100,7 +103,10 @@ class SensorFM(nn.Module):
         p_obs = patchify(visible.to(xn.dtype), cfg.patch_len, cfg.patch_stride)
         tok = self.embed(torch.cat([p_vals, p_obs], dim=-1))
         tok = torch.where(hide.unsqueeze(-1), self.mask_token.to(tok.dtype), tok)
-        tok = tok + self.pos
+        # Right-aligned positions: a shorter input occupies the *last* n slots, exactly as if it
+        # had been left-padded to the full context — so short downstream windows (C-MAPSS) see
+        # the same positional semantics as pretraining windows.
+        tok = tok + self.pos[:, cfg.n_patches - n :]
         token_valid = patchify(obs.to(torch.uint8), cfg.patch_len, cfg.patch_stride).amax(-1) > 0
         # Hidden future patches have no observations but must still be attendable as queries; as
         # keys they carry only the mask token + position, which is harmless.
@@ -120,6 +126,17 @@ class SensorFM(nn.Module):
         """Pooled (B, D) representation of fully visible windows, for downstream heads."""
         out = self.forward(x, obs)
         return masked_mean_pool(out.hidden, out.token_valid)
+
+    def features(self, x: torch.Tensor, obs: torch.Tensor) -> torch.Tensor:
+        """(B, D + 2): pooled embedding plus the RevIN location and log-scale.
+
+        RevIN removes each window's level and scale, which is right for shape modeling but erases
+        exactly what degradation tasks need (e.g. a slowly rising temperature in C-MAPSS), so
+        downstream heads get the statistics back as explicit features.
+        """
+        out = self.forward(x, obs)
+        pooled = masked_mean_pool(out.hidden, out.token_valid)
+        return torch.cat([pooled, out.loc, torch.log(out.scale)], dim=-1)
 
     def normalize_target(
         self, x: torch.Tensor, loc: torch.Tensor, scale: torch.Tensor

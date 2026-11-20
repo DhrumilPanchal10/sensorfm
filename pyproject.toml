@@ -57,11 +57,12 @@ plugins = []
 
 [[tool.mypy.overrides]]
 # nn.Module.__call__ is typed as returning Any; returning a submodule call is not a bug.
-module = ["sensorfm.model.*", "sensorfm.pretrain.*", "sensorfm.utils.dist", "sensorfm.finetune.*"]
+module = ["sensorfm.model.*", "sensorfm.pretrain.*", "sensorfm.utils.dist", "sensorfm.finetune.*", "sensorfm.baselines.*"]
 warn_return_any = false
+disallow_untyped_calls = false  # Tensor.backward is untyped
 
 [[tool.mypy.overrides]]
-module = ["einops.*", "hydra.*", "omegaconf.*", "pyarrow.*", "matplotlib.*", "mlflow.*"]
+module = ["einops.*", "hydra.*", "omegaconf.*", "pyarrow.*", "matplotlib.*", "mlflow.*", "statsmodels.*", "sklearn.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
