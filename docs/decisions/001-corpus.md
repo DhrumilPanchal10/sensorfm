@@ -1,6 +1,6 @@
 # ADR 001 — Pretraining corpus selection
 
-**Status:** proposed — awaiting 🛑 HUMAN CHECKPOINT 1 (2026-11-20)
+**Status:** proposed — awaiting 🛑 HUMAN CHECKPOINT 1 (2026-11-20; licenses checked same day)
 
 ## Verified facts (checked at runtime, 2026-11-20)
 
@@ -47,26 +47,24 @@ subset are written to the manifest.
 
 **Split:** 1% of series held out for validation by stable hash of `dataset/item_id`.
 
-## Licenses — ⚠️ NOT YET VERIFIED PER SUBSET
+## Licenses — checked at the primary source (2026-11-20)
 
-The LOTSA repo is tagged Apache-2.0, but the underlying datasets carry their own terms (the Moirai
-paper's appendix lists sources). Each still needs checking at Checkpoint 1. Best current knowledge,
-**unverified**:
+Method: Zenodo records API (license field), GitHub repo license + README data terms, OEDI dataset
+metadata, and the Moirai paper's collection tables to map each LOTSA subset to its source.
 
-| Subset | Believed upstream / license | Verified? |
+| Status | Subsets | Evidence |
 |---|---|---|
-| buildings_900k | NREL BuildingsBench (EULP), CC-BY-4.0 | no |
-| bdg-2_* | Building Data Genome 2, CC-BY-4.0 | no |
-| lcl / london_smart_meters | UK Power Networks via London Datastore | no |
-| PEMS*, traffic_hourly | Caltrans PeMS (public) | no |
-| era5_2018 | Copernicus C3S licence | no |
-| kdd2022 | Baidu KDD Cup 2022 wind data (competition terms) | no |
-| azure_vm_traces_2017 | Azure Public Dataset | no |
-| alibaba_cluster_trace_2018 | Alibaba clusterdata | no |
-| others | see Moirai paper appendix | no |
+| ✅ CC BY 4.0 | weather, temperature_rain, pedestrian_counts, australian_electricity_demand, kdd_cup_2018, saugeenday, solar_power, wind_power, wind_farms, london_smart_meters, traffic_hourly, oikolab_weather, elecdemand (Monash archive) | Zenodo records 4654822, 5129073, 4656626, 4659727, 4656719, 4656058, 4656027, 4656032, 4654909, 4656091, 4656132, 5184708, 4656069 |
+| ✅ CC BY 4.0 | buildings_900k, bdg-2_*, lcl, smart, ideal, borealis (BuildingsBench) | OEDI submission 5859 metadata (doi 10.25984/1986147) |
+| ✅ CC BY 4.0 | residential_load_power, residential_pv_power | Zenodo 8219786 |
+| ✅ CC BY 4.0 | azure_vm_traces_2017 | Azure/AzurePublicDataset repo license |
+| ⚠️ CC BY-NC 4.0 (non-commercial) | largest_2017 | LargeST README §4 — kept, flagged: fine for this portfolio project, blocks commercial use of the trained model |
+| ❌ no license → **removed** | alibaba_cluster_trace_2018, Q-TRAFFIC | alibaba/clusterdata: no license, README "encourage … study or research"; JingqingZ/BaiduTraffic: no license |
+| ◻️ code license only, data terms not separately stated | PEMS03/04/07/08, PEMS_BAY, LOS_LOOP, LOOP_SEATTLE (LibCity, Apache-2.0 repo; PeMS is public Caltrans data); gfc12/17, spain, bull, hog (ProEnFo, BSD-3 repo); kdd2022 (PaddleSpatial, Apache-2.0 repo); era5_2018 (ClimateLearn, MIT repo; ERA5 itself is under the Copernicus licence, attribution required); subseasonal* (SubseasonalClimateUSA) | repo licenses via GitHub API |
+| ◻️ not confirmed | beijing_air_quality (UCI 501; UCI's API exposes no license field), china_air_quality (Zheng et al. 2015) | — |
 
-This is a non-commercial portfolio project; any subset whose terms turn out to forbid research
-use will be removed before the real build.
+This is a non-commercial portfolio project. Attribution for all CC BY sources goes in the
+dataset card and README credits before any public release.
 
 ## Open questions for the owner
 

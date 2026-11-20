@@ -16,7 +16,7 @@ seed: 0
 subsets:
   # --- energy (load, generation, buildings) ---
   - {name: buildings_900k, domain: energy, max_files: 2, max_obs: 12_000_000}
-  - {name: largest_2017, domain: energy, max_files: 1, max_obs: 8_000_000}
+  - {name: largest_2017, domain: energy, max_files: 1, max_obs: 8_000_000}  # CC BY-NC 4.0 (non-commercial)
   - {name: residential_load_power, domain: energy, max_files: 1, max_obs: 6_000_000}
   - {name: residential_pv_power, domain: energy, max_files: 1, max_obs: 6_000_000}
   - {name: london_smart_meters_with_missing, domain: energy, max_files: 1, max_obs: 6_000_000}
@@ -42,7 +42,7 @@ subsets:
   - {name: wind_power, domain: industrial}
   # --- machine telemetry (IoT-like) ---
   - {name: azure_vm_traces_2017, domain: telemetry, max_files: 1, max_obs: 6_000_000}
-  - {name: alibaba_cluster_trace_2018, domain: telemetry, max_files: 1, max_obs: 4_000_000}
+  # alibaba_cluster_trace_2018 removed: no license (README only 'encourages' research use). ADR 001.
   # --- transport sensors (loop detectors) ---
   - {name: PEMS03, domain: transport}
   - {name: PEMS04, domain: transport}
@@ -52,7 +52,7 @@ subsets:
   - {name: LOS_LOOP, domain: transport}
   - {name: LOOP_SEATTLE, domain: transport}
   - {name: traffic_hourly, domain: transport}
-  - {name: Q-TRAFFIC, domain: transport, max_files: 1}
+  # Q-TRAFFIC removed: no license found (Baidu research dataset). ADR 001.
   - {name: pedestrian_counts, domain: transport}
   # --- nature / climate sensors ---
   - {name: weather, domain: climate}
