@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Any
 
 import numpy as np
+import torch
 import typer
 
 from sensorfm.baselines.cmapss_classic import (
@@ -57,6 +58,7 @@ def main(
                     pred, info = fit_predict_gbm(xtr, mtr, ytr, xva, mva, yva, xte, mte, seed)
                 else:
                     c = xtr.shape[1]
+                    torch.manual_seed(seed)  # seed *before* construction: init weights depend on it
                     model = LSTMRegressor(c) if method == "lstm" else CNNRegressor(c)
                     pred, info = fit_predict_torch(
                         model, xtr, mtr, ytr, xva, mva, yva, xte, mte, seed
