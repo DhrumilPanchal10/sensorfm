@@ -29,8 +29,8 @@ data-pretrain:          # run on Kaggle (see kaggle/README.md), not locally: dis
 		--reference $${REFERENCE_DIR:-data/downstream/reference} --out $${SHARD_OUT:-data/shards/main}
 data-downstream:        # ~0.6 GB; on Kaggle use DOWNSTREAM_ROOT=/kaggle/working/downstream
 	$(PY) python scripts/prepare_downstream.py --root $${DOWNSTREAM_ROOT:-data/downstream}
-pretrain-debug:
-	$(call TODO,Task 2.3)
+pretrain-debug: data-debug   # tiny model, synthetic shards, CPU, < 2 min
+	$(PY) python -m sensorfm.pretrain.train
 pretrain:
 	$(call TODO,Task 2.3)
 finetune:

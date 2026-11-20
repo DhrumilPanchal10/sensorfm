@@ -1,5 +1,4 @@
-source: synthetic
-n_series: 256
-series_length: 2048
+# Debug data: synthetic physics shards built by `make data-debug`.
+shard_dir: data/shards/debug
 context_length: 512
-seed: 0
+shuffle_buffer: 256

@@ -1,15 +1,22 @@
-strategy: none          # none | ddp | fsdp
-precision: fp32         # fp32 | fp16 | bf16  (Kaggle T4/P100: use fp16)
+# Single GPU (Kaggle T4/P100: precision fp16; bf16 only on Ampere+).
+strategy: none
+precision: fp16
 compile: false
-micro_batch: 32
+fused_adamw: true
+micro_batch: 64
 grad_accum: 1
-max_steps: 1000
+max_steps: 10000
 lr: 3.0e-4
-warmup_steps: 100
+warmup_steps: 500
+min_lr_ratio: 0.1
 weight_decay: 0.1
 betas: [0.9, 0.95]
 grad_clip: 1.0
-num_workers: 0
-log_every: 10
-ckpt_every: 200
+num_workers: 2
+pin_memory: true
+log_every: 50
+val_every: 1000
+val_batches: 50
+ckpt_every: 500
 keep_last: 3
+device: auto

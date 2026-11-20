@@ -1,0 +1,26 @@
+{
+  "tiny": {
+    "params": 114722,
+    "non_embedding_params": 112674,
+    "tokens_per_window": 32,
+    "train_flops_per_token": 700620.0
+  },
+  "s20m": {
+    "params": 14283426,
+    "non_embedding_params": 14271138,
+    "tokens_per_window": 32,
+    "train_flops_per_token": 86216652.0
+  },
+  "m60m": {
+    "params": 50555042,
+    "non_embedding_params": 50538658,
+    "tokens_per_window": 32,
+    "train_flops_per_token": 304804812.0
+  },
+  "l150m": {
+    "params": 127756962,
+    "non_embedding_params": 127732386,
+    "tokens_per_window": 32,
+    "train_flops_per_token": 769048524.0
+  }
+}

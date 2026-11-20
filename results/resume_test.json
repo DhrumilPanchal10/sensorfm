@@ -1,0 +1,7 @@
+{
+  "killed_after_step": 25,
+  "resumed_from_step": 20,
+  "lost_steps": 5,
+  "seconds_to_first_step_after_resume": 0.9441208839416504,
+  "resume_process_wall_s": 3.7863857746124268
+}

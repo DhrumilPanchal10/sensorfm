@@ -1,7 +1,7 @@
-name: l150m 768 18 12
-d_model: 
-n_layers: 
-n_heads: 
+name: l150m
+d_model: 768
+n_layers: 18
+n_heads: 12
 mlp_ratio: 4
 patch_len: 16
 patch_stride: 16

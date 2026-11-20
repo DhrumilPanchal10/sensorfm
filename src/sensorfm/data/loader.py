@@ -172,11 +172,17 @@ def make_loader(
     pin_memory: bool = False,
     prefetch_factor: int | None = 2,
 ) -> torch.utils.data.DataLoader[Sample]:
-    """DataLoader with settings that matter for throughput (Task 3.2 sweeps these)."""
+    """DataLoader with settings that matter for throughput (Task 3.2 sweeps these).
+
+    A private generator is passed so creating an iterator never draws from the *global* torch RNG:
+    otherwise resuming (which restores the global RNG, then creates the iterator) would shift every
+    later dropout mask and break exact resumption. All our randomness is seeded in the dataset.
+    """
     dataset.batch_size = batch_size
     return torch.utils.data.DataLoader(
         dataset,
         batch_size=batch_size,
+        generator=torch.Generator().manual_seed(dataset.seed),
         num_workers=num_workers,
         pin_memory=pin_memory,
         prefetch_factor=prefetch_factor if num_workers > 0 else None,

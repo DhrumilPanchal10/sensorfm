@@ -1,4 +1,3 @@
-source: shards
-shard_dir: ${oc.env:DATA_ROOT,./data}/shards
+shard_dir: ${oc.env:SHARD_DIR,./data/shards/main}
 context_length: 512
-synthetic_mix: 0.0   # ablation E5 sets 0.1–0.2
+shuffle_buffer: 4096

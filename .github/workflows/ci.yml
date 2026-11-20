@@ -17,8 +17,9 @@ jobs:
           uv sync --group dev --inexact
       - name: Lint
         run: make lint
-      - name: Test
-        run: make test
-      # Enabled once Task 2.3 lands:
-      # - name: Pretrain debug (CPU, tiny, synthetic)
-      #   run: make pretrain-debug
+      - name: Build debug shards
+        run: make data-debug
+      - name: Test (incl. slow crash-resume integration test)
+        run: make test-all
+      - name: Pretrain debug (CPU, tiny, synthetic)
+        run: make pretrain-debug

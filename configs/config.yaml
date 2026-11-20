@@ -1,10 +1,24 @@
 defaults:
   - data: synthetic_debug
   - model: tiny
-  - train: single_gpu
+  - train: cpu_debug
   - _self_
 
 seed: 0
 run_id: ${now:%Y%m%d-%H%M%S}
 output_dir: runs/${run_id}
-tracking_uri: ${oc.env:MLFLOW_TRACKING_URI,file:./mlruns}
+resume: false          # true -> continue from the latest checkpoint in output_dir
+use_mlflow: false      # needs the [track] extra
+max_wall_minutes: 0    # >0: stop cleanly (with a checkpoint) before a Kaggle session limit
+
+objective:
+  mask_ratio: 0.4
+  horizon: 64
+  alpha: 0.5
+
+hydra:
+  run:
+    dir: ${output_dir}
+  output_subdir: .hydra
+  job:
+    chdir: false
