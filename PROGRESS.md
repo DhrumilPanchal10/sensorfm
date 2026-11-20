@@ -10,3 +10,4 @@
 - 2026-11-20 phase3.task1-2 (tooling only): bench ladder (7 rungs, parity vs seed noise, torch.profiler traces), act-ckpt, generated efficiency report, kaggle/run_ladder.sh + pretrain.sh + budget estimate. Measurements pending Kaggle.
 - 2026-11-20 phase4-5 (code): baselines (naive/ETS/GBM/LSTM/CNN), fine-tune regimes (RUL/bearing/forecast/anomaly), ONNX export + ORT INT8 + TRT builder + latency bench, streaming service + drift. GPU/pretrained results pending Kaggle.
 - 2026-11-20 04:2x: eval tooling complete (UCR runner, analyze_rul bootstrap, report sections); fixed baseline seeding bug; 100/100 tests. CPU baselines (ETT naive/ETS; C-MAPSS GBM/LSTM/CNN full + 10% few-shot) running.
+- 2026-11-20 09:06: C-MAPSS baseline rerun (post target-scaling fix) stalled after 3/36 runs (machine likely slept); not committed. Rerun: make sure Mac stays awake (caffeinate), then the two eval_cmapss_baselines.py commands in PROGRESS notes.
