@@ -20,9 +20,13 @@ test-all:
 
 data-debug:
 	$(PY) python scripts/make_debug_data.py
+	test -f data/shards/debug/manifest.json || \
+	$(PY) python scripts/build_corpus.py --synthetic-only --synthetic-series 512 \
+		--synthetic-length 4096 --shard-bytes 2000000 --val-frac 0.1 --out data/shards/debug
 
-data-pretrain:          # runs on Kaggle, not locally (disk)
-	$(call TODO,Task 1.3)
+data-pretrain:          # run on Kaggle (see kaggle/README.md), not locally: disk
+	$(PY) python scripts/build_corpus.py --selection configs/data/lotsa_selection.yaml \
+		--reference $${REFERENCE_DIR:-data/downstream/reference} --out $${SHARD_OUT:-data/shards/main}
 data-downstream:
 	$(call TODO,Task 1.5)
 pretrain-debug:

@@ -1,0 +1,67 @@
+# Pretraining corpus selection from Salesforce/lotsa_data (verified on HF 2026-11-20; repo last
+# modified 2025-01-21; repo-level license apache-2.0). Rationale: docs/decisions/001-corpus.md.
+#
+# max_files: how many arrow files to download (bounds Kaggle disk/time for huge subsets).
+# max_obs:   cap on observations kept from this subset (keeps any one source from dominating).
+# Multivariate subsets are split into one univariate series per variate.
+repo_id: Salesforce/lotsa_data
+default_max_obs: 4_000_000
+min_length: 128          # shorter series are dropped (patch 16 x 8 tokens)
+max_missing_frac: 0.2
+max_gap: 32              # linear-impute gaps up to this many points; split series at longer gaps
+val_frac: 0.01           # held out by series (hash of dataset/item_id), never by window
+shard_bytes: 268435456   # 256 MB
+seed: 0
+
+subsets:
+  # --- energy (load, generation, buildings) ---
+  - {name: buildings_900k, domain: energy, max_files: 2, max_obs: 12_000_000}
+  - {name: largest_2017, domain: energy, max_files: 1, max_obs: 8_000_000}
+  - {name: residential_load_power, domain: energy, max_files: 1, max_obs: 6_000_000}
+  - {name: residential_pv_power, domain: energy, max_files: 1, max_obs: 6_000_000}
+  - {name: london_smart_meters_with_missing, domain: energy, max_files: 1, max_obs: 6_000_000}
+  - {name: lcl, domain: energy}
+  - {name: bdg-2_bear, domain: energy}
+  - {name: bdg-2_fox, domain: energy}
+  - {name: bdg-2_panther, domain: energy}
+  - {name: bdg-2_rat, domain: energy}
+  - {name: ideal, domain: energy}
+  - {name: australian_electricity_demand, domain: energy}
+  - {name: gfc12_load, domain: energy}
+  - {name: gfc17_load, domain: energy}
+  - {name: elecdemand, domain: energy}
+  - {name: spain, domain: energy}
+  - {name: bull, domain: energy}
+  - {name: hog, domain: energy}
+  - {name: borealis, domain: energy}
+  - {name: smart, domain: energy}
+  # --- renewables / industrial SCADA ---
+  - {name: wind_farms_with_missing, domain: industrial, max_files: 1, max_obs: 8_000_000}
+  - {name: kdd2022, domain: industrial, max_obs: 6_000_000}
+  - {name: solar_power, domain: industrial}
+  - {name: wind_power, domain: industrial}
+  # --- machine telemetry (IoT-like) ---
+  - {name: azure_vm_traces_2017, domain: telemetry, max_files: 1, max_obs: 6_000_000}
+  - {name: alibaba_cluster_trace_2018, domain: telemetry, max_files: 1, max_obs: 4_000_000}
+  # --- transport sensors (loop detectors) ---
+  - {name: PEMS03, domain: transport}
+  - {name: PEMS04, domain: transport}
+  - {name: PEMS07, domain: transport}
+  - {name: PEMS08, domain: transport}
+  - {name: PEMS_BAY, domain: transport}
+  - {name: LOS_LOOP, domain: transport}
+  - {name: LOOP_SEATTLE, domain: transport}
+  - {name: traffic_hourly, domain: transport}
+  - {name: Q-TRAFFIC, domain: transport, max_files: 1}
+  - {name: pedestrian_counts, domain: transport}
+  # --- nature / climate sensors ---
+  - {name: weather, domain: climate}
+  - {name: temperature_rain_with_missing, domain: climate}
+  - {name: oikolab_weather, domain: climate}
+  - {name: beijing_air_quality, domain: climate}
+  - {name: china_air_quality, domain: climate}
+  - {name: kdd_cup_2018_with_missing, domain: climate}
+  - {name: saugeenday, domain: climate}
+  - {name: subseasonal, domain: climate}
+  - {name: subseasonal_precip, domain: climate}
+  - {name: era5_2018, domain: climate, max_files: 2, max_obs: 8_000_000}
