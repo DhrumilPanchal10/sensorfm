@@ -1,0 +1,5 @@
+source: synthetic
+n_series: 256
+series_length: 2048
+context_length: 512
+seed: 0

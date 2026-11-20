@@ -1,0 +1,10 @@
+defaults:
+  - data: synthetic_debug
+  - model: tiny
+  - train: single_gpu
+  - _self_
+
+seed: 0
+run_id: ${now:%Y%m%d-%H%M%S}
+output_dir: runs/${run_id}
+tracking_uri: ${oc.env:MLFLOW_TRACKING_URI,file:./mlruns}

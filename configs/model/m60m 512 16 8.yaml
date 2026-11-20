@@ -1,0 +1,8 @@
+name: m60m 512 16 8
+d_model: 
+n_layers: 
+n_heads: 
+mlp_ratio: 4
+patch_len: 16
+patch_stride: 16
+dropout: 0.1

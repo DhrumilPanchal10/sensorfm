@@ -1,0 +1,4 @@
+source: shards
+shard_dir: ${oc.env:DATA_ROOT,./data}/shards
+context_length: 512
+synthetic_mix: 0.0   # ablation E5 sets 0.1–0.2
