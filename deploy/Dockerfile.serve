@@ -1,0 +1,12 @@
+# CPU scoring service: ONNX Runtime only (no torch at serving time would be ideal; the package
+# currently imports torch in shared modules, so the CPU torch wheel is installed).
+FROM python:3.11-slim
+WORKDIR /app
+RUN pip install --no-cache-dir uv
+COPY pyproject.toml README.md ./
+COPY src ./src
+RUN uv pip install --system --no-cache torch --index-url https://download.pytorch.org/whl/cpu \
+ && uv pip install --system --no-cache -e ".[export,serve]"
+ENV SENSORFM_TASK=rul SENSORFM_MODEL=/models/model.onnx
+EXPOSE 8000
+CMD ["uvicorn", "sensorfm.serving.app:app", "--host", "0.0.0.0", "--port", "8000"]

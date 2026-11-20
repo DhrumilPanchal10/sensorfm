@@ -45,7 +45,7 @@ export:
 	$(call TODO,Task 5.1)
 bench:
 	$(call TODO,Task 5.2)
-serve:
-	$(call TODO,Task 5.3)
+serve:                  # SENSORFM_MODEL=path/to/model.onnx SENSORFM_TASK=rul|forecast
+	$(PY) uvicorn sensorfm.serving.app:app --port 8000
 report:
 	$(call TODO,Phase 6)
