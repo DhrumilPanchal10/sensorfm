@@ -66,7 +66,7 @@ warn_return_any = false
 disallow_untyped_calls = false  # Tensor.backward is untyped
 
 [[tool.mypy.overrides]]
-module = ["einops.*", "hydra.*", "omegaconf.*", "pyarrow.*", "matplotlib.*", "mlflow.*", "statsmodels.*", "sklearn.*", "onnxruntime.*", "onnx.*", "tensorrt.*"]
+module = ["einops.*", "hydra.*", "omegaconf.*", "pyarrow.*", "matplotlib.*", "mlflow.*", "statsmodels.*", "sklearn.*", "onnxruntime.*", "onnx.*", "tensorrt.*", "chronos.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]

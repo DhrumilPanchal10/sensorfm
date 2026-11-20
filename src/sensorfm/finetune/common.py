@@ -31,9 +31,13 @@ from sensorfm.model.sensorfm import ModelConfig, SensorFM
 F32 = npt.NDArray[np.float32]
 
 
-def load_encoder(ckpt: Path | None, model_cfg: ModelConfig, device: torch.device) -> SensorFM:
+def load_encoder(
+    ckpt: Path | None, model_cfg: ModelConfig | None, device: torch.device
+) -> SensorFM:
     """Pretrained encoder from a checkpoint directory, or random init when ``ckpt`` is None."""
     if ckpt is None:
+        if model_cfg is None:
+            raise ValueError("model_cfg is required for a randomly initialized encoder")
         return SensorFM(model_cfg).to(device)
     meta = torch.load(ckpt / "meta.pt", map_location="cpu", weights_only=False)
     cfg_dict = dict(meta["model_config"])
