@@ -13,6 +13,7 @@ Multivariate rows are split into one univariate series per variate, since the mo
 
 from __future__ import annotations
 
+import functools
 from collections.abc import Iterator
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -95,14 +96,19 @@ def iter_arrow_file(path: str | Path, dataset: str, domain: str = "") -> Iterato
                     yield RawSeries(dataset, str(item_id), str(freq), arr, domain)
 
 
-def list_subset_files(repo_id: str, subset: str, max_files: int | None) -> list[str]:
-    """Arrow files of one subset on the Hub, sorted, truncated to ``max_files``."""
+@functools.lru_cache(maxsize=4)
+def _repo_files(repo_id: str) -> tuple[str, ...]:
+    """One listing of the whole repo (~6.7k files), reused for every subset: listing per subset
+    would hit the Hub 40+ times and risks rate limits on an unauthenticated Kaggle session."""
     from huggingface_hub import HfApi
 
+    return tuple(HfApi().list_repo_files(repo_id, repo_type="dataset"))
+
+
+def list_subset_files(repo_id: str, subset: str, max_files: int | None) -> list[str]:
+    """Arrow files of one subset on the Hub, sorted, truncated to ``max_files``."""
     files = sorted(
-        f
-        for f in HfApi().list_repo_files(repo_id, repo_type="dataset")
-        if f.startswith(f"{subset}/") and f.endswith(".arrow")
+        f for f in _repo_files(repo_id) if f.startswith(f"{subset}/") and f.endswith(".arrow")
     )
     if not files:
         raise FileNotFoundError(f"no arrow files for subset {subset!r} in {repo_id}")

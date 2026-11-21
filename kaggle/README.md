@@ -10,25 +10,19 @@ quota in your Kaggle settings; it changes. Nothing here costs money.
 2. Optional: add `HF_TOKEN` (read-only Hugging Face token) as a Secret. It raises Hub rate limits
    for the LOTSA download.
 
-## Step 1 — build data (CPU session, Internet ON)
+## Step 1 — build data (CPU session, Internet ON) — notebook provided
 
-New notebook → Settings: Accelerator **None**, Internet **On**. One cell:
+1. Kaggle → **Create → New Notebook → File → Import Notebook** → upload
+   `kaggle/notebooks/01_build_data.ipynb` from this repo.
+2. Right panel: **Accelerator: None**, **Internet: On**; **Add-ons → Secrets**: `GH_TOKEN`
+   (and optionally `HF_TOKEN`), each toggled on for this notebook.
+3. **Run All**. Expect ~1–2 h (downloads ~5 GB of LOTSA arrow files to `/tmp`, writes ~0.5–1 GB
+   of shards). The last cell prints the corpus summary and manifest hash.
+4. **Save Version → Save & Run All (Commit)**. When it finishes: notebook **Output** tab →
+   **New Dataset** → name `sensorfm-data`, **Private**.
 
-```bash
-!git clone https://$GH_TOKEN@github.com/<you>/sensorfm.git && cd sensorfm && bash kaggle/build_data.sh
-```
-
-(For a public repo drop `$GH_TOKEN@`. Read secrets in a Python cell first:
-`from kaggle_secrets import UserSecretsClient; import os;
-os.environ["GH_TOKEN"]=UserSecretsClient().get_secret("GH_TOKEN")`.)
-
-Outputs land in `/kaggle/working/`: `downstream/`, `shards/main/` (with `manifest.json`),
-`results/`. Click **Save Version → Save & Run All**, then from the notebook output choose
-**New Dataset** → private dataset `sensorfm-data`. Later GPU notebooks attach it as input.
-
-Disk: Kaggle gives ~20 GB in `/kaggle/working` (persisted) plus temporary space. The build
-downloads at most ~12 GB of arrow files into the temp HF cache (`/kaggle/tmp`) and writes only
-the ~0.5–1 GB of shards to `/kaggle/working`.
+Validated beforehand on 5 real subsets locally (multivariate + covariate formats, decontamination
+against the full downstream reference, training on the resulting shards).
 
 ## Step 2 — training (GPU sessions) — added in Phase 2/3
 

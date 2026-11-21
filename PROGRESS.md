@@ -12,3 +12,4 @@
 - 2026-11-20 04:2x: eval tooling complete (UCR runner, analyze_rul bootstrap, report sections); fixed baseline seeding bug; 100/100 tests. CPU baselines (ETT naive/ETS; C-MAPSS GBM/LSTM/CNN full + 10% few-shot) running.
 - 2026-11-20 09:06: C-MAPSS baseline rerun (post target-scaling fix) stalled after 3/36 runs (machine likely slept); not committed. Rerun: make sure Mac stays awake (caffeinate), then the two eval_cmapss_baselines.py commands in PROGRESS notes.
 - 2026-11-20 10:45: C-MAPSS baselines (fixed target scaling) done: 36 full + 36 few-shot runs, 0 collapsed; paired bootstrap: GBM/LSTM/CNN indistinguishable except CNN worse on FD004. Bootstrap vectorized (10 min -> 0.3 s).
+- 2026-11-20: Checkpoint 1 APPROVED (defaults). Real LOTSA pipeline dry-run on 5 subsets OK (10.2M obs, 96 s; train on real shards OK). Repo listing cached. Kaggle data-build notebook added.

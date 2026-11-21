@@ -1,6 +1,6 @@
 # ADR 001 — Pretraining corpus selection
 
-**Status:** proposed — awaiting 🛑 HUMAN CHECKPOINT 1 (2026-11-20; licenses checked same day)
+**Status:** accepted — Checkpoint 1 approved by the owner 2026-11-20 (defaults: keep `largest_2017` (CC BY-NC) and the code-license-only subsets; non-commercial portfolio use).
 
 ## Verified facts (checked at runtime, 2026-11-20)
 

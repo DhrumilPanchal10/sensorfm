@@ -1,4 +1,6 @@
-# 🛑 Human Checkpoint 1 — corpus, decontamination, downstream protocols
+# ✅ Human Checkpoint 1 — corpus, decontamination, downstream protocols
+
+**APPROVED by the owner on 2026-11-20 with all defaults below** (the "Default" column is the decision).
 
 Prepared 2026-11-20. Nothing has been run on Kaggle and nothing has cost money.
 
