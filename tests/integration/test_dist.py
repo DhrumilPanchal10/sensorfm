@@ -90,6 +90,14 @@ def test_distributed_resume_is_exact(tmp_path: Path, shards: Path, strategy: str
         assert (split / "checkpoints" / "step_00000020" / "dcp").is_dir()
     assert (split / "checkpoints" / "step_00000020" / "rng_rank1.pt").exists()
     _run(cmd(split, "resume=true"))
+    # Downstream code loads checkpoints into a plain model: DDP must not leak "module." prefixes,
+    # and sharded FSDP2 (DCP) checkpoints must be consolidated on load.
+    import torch
+
+    from sensorfm.finetune.common import load_encoder
+
+    enc = load_encoder(split / "checkpoints" / "step_00000020", None, torch.device("cpu"))
+    assert enc.cfg.d_model > 0
     a, b = read_metrics(ref / "metrics.jsonl"), read_metrics(split / "metrics.jsonl")
     assert sorted(b) == list(range(1, 31))
     for step in range(1, 31):

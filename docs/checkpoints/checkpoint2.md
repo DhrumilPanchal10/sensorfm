@@ -16,10 +16,10 @@ Verify your remaining weekly GPU quota in Kaggle (Settings → Accelerator) befo
 
 | # | Script | Hardware | Est. session-hours | Produces |
 |---|---|---|---|---|
-| 1 | `MODEL=s20m kaggle/run_ladder.sh` | 1× T4 | 0.5 | `results/profiles/ladder.json`, traces (Tasks 3.1/3.2) |
-| 2 | `kaggle/run_scaling.sh` | T4 ×2 | 0.6 | `results/scaling/*.json` (Task 3.3) |
-| 3 | `MODEL=s20m STEPS=? kaggle/pretrain.sh` | 1× T4 (or ×2 DDP) | ≤ 8 | s20m checkpoint (Task 2.3 GPU acceptance, 3.5) |
-| 4 | `kaggle/run_downstream.sh` (s20m) | 1× T4 | ~4 | RUL / forecast / zero-shot results (Phase 4) |
+| 1 | `02_ladder_scaling.ipynb` (ladder part) | 1× T4 | 0.5 | `results/profiles/ladder.json`, traces (Tasks 3.1/3.2) |
+| 2 | `02_ladder_scaling.ipynb` (scaling part) | T4 ×2 | 0.6 | `results/scaling/*.json` (Task 3.3) |
+| 3 | `03_pretrain.ipynb` (s20m) | T4 ×2 DDP | ≤ 8 | s20m checkpoint (Task 2.3 GPU acceptance, 3.5) |
+| 4 | `04_downstream.ipynb` (s20m) | 1× T4 | ~4 | RUL / forecast / zero-shot results (Phase 4) |
 | 5 | m60m pretrain | T4 ×2 DDP | ≤ 10 (2 sessions) | Task 3.5 size point |
 | 6 | l150m pretrain | T4 ×2 DDP | budget-dependent | Task 3.5 size point (may be skipped) |
 | 7 | Deploy: TensorRT FP16/INT8 + GPU latency | 1× T4 | 0.5 | `results/bench/*_trt.json` (Task 5.2) |

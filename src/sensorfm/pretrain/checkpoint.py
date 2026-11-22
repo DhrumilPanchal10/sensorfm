@@ -33,7 +33,7 @@ import numpy as np
 import torch
 from torch import nn
 
-from sensorfm.utils.dist import DistInfo, barrier
+from sensorfm.utils.dist import DistInfo, barrier, unwrap
 
 _PAT = re.compile(r"^step_(\d{8})$")
 
@@ -108,7 +108,10 @@ def save(
         dcp_save({"model": msd, "optimizer": osd}, checkpoint_id=str(tmp / "dcp"))
     elif info.is_main:
         torch.save(
-            {"model": model.state_dict(), "optimizer": optimizer.state_dict()}, tmp / "state.pt"
+            # unwrap: a DDP state_dict prefixes every key with "module.", which would make the
+            # checkpoint unloadable by anything but another DDP wrapper (e.g. downstream code).
+            {"model": unwrap(model).state_dict(), "optimizer": optimizer.state_dict()},
+            tmp / "state.pt",
         )
     if info.is_main:
         torch.save({**meta, "step": step, "world_size": info.world_size}, tmp / "meta.pt")
@@ -146,7 +149,7 @@ def load(
         )
     else:
         st = torch.load(path / "state.pt", map_location=info.device, weights_only=False)
-        model.load_state_dict(st["model"])
+        unwrap(model).load_state_dict(st["model"])
         optimizer.load_state_dict(st["optimizer"])
     rng_file = path / f"rng_rank{info.rank}.pt"
     set_rng_state(torch.load(rng_file, map_location="cpu", weights_only=False))

@@ -43,9 +43,22 @@ def load_encoder(
     cfg_dict = dict(meta["model_config"])
     cfg_dict["quantiles"] = tuple(cfg_dict["quantiles"])
     model = SensorFM(ModelConfig(**cfg_dict)).to(device)
-    state = torch.load(ckpt / "state.pt", map_location=device, weights_only=False)
-    model.load_state_dict(state["model"])
-    return model
+    if (ckpt / "state.pt").exists():  # single process / DDP
+        state = torch.load(ckpt / "state.pt", map_location=device, weights_only=False)
+        model.load_state_dict(state["model"])
+        return model
+    if (ckpt / "dcp").is_dir():  # FSDP2: consolidate the sharded checkpoint once, on CPU
+        import tempfile
+
+        from torch.distributed.checkpoint.format_utils import dcp_to_torch_save
+
+        with tempfile.TemporaryDirectory() as td:
+            full = Path(td) / "full.pt"
+            dcp_to_torch_save(str(ckpt / "dcp"), str(full))
+            state = torch.load(full, map_location=device, weights_only=False)
+        model.load_state_dict(state["model"])
+        return model
+    raise FileNotFoundError(f"{ckpt} has neither state.pt nor a dcp/ directory")
 
 
 class ChannelIndependent(nn.Module):
