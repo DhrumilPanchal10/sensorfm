@@ -1,0 +1,605 @@
+{
+ "build": {
+  "blocked_datasets": [],
+  "capped_datasets": [
+   "LOOP_SEATTLE",
+   "LOS_LOOP",
+   "PEMS03",
+   "PEMS04",
+   "PEMS07",
+   "PEMS08",
+   "PEMS_BAY",
+   "azure_vm_traces_2017",
+   "bdg-2_rat",
+   "beijing_air_quality",
+   "buildings_900k",
+   "china_air_quality",
+   "era5_2018",
+   "largest_2017",
+   "lcl",
+   "london_smart_meters_with_missing",
+   "residential_load_power",
+   "residential_pv_power",
+   "subseasonal",
+   "subseasonal_precip",
+   "temperature_rain_with_missing",
+   "traffic_hourly",
+   "weather",
+   "wind_farms_with_missing"
+  ],
+  "cleaning": {
+   "LOOP_SEATTLE": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4099680,
+    "kept_series": 39
+   },
+   "LOS_LOOP": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4009824,
+    "kept_series": 117
+   },
+   "PEMS03": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4009824,
+    "kept_series": 153
+   },
+   "PEMS04": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4010112,
+    "kept_series": 236
+   },
+   "PEMS07": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4007808,
+    "kept_series": 142
+   },
+   "PEMS08": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4017600,
+    "kept_series": 225
+   },
+   "PEMS_BAY": {
+    "dropped": {},
+    "imputed_points": 924,
+    "kept_obs": 4013856,
+    "kept_series": 77
+   },
+   "australian_electricity_demand": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 1153584,
+    "kept_series": 5
+   },
+   "azure_vm_traces_2017": {
+    "dropped": {
+     "too_short": 1
+    },
+    "imputed_points": 1383,
+    "kept_obs": 6005726,
+    "kept_series": 1059
+   },
+   "bdg-2_bear": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 1482312,
+    "kept_series": 91
+   },
+   "bdg-2_fox": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 2324568,
+    "kept_series": 135
+   },
+   "bdg-2_panther": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 919800,
+    "kept_series": 105
+   },
+   "bdg-2_rat": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4008960,
+    "kept_series": 235
+   },
+   "beijing_air_quality": {
+    "dropped": {
+     "segment_too_short": 8
+    },
+    "imputed_points": 44256,
+    "kept_obs": 4012603,
+    "kept_series": 277
+   },
+   "borealis": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 83269,
+    "kept_series": 15
+   },
+   "buildings_900k": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 12002570,
+    "kept_series": 1370
+   },
+   "bull": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 719304,
+    "kept_series": 41
+   },
+   "china_air_quality": {
+    "dropped": {
+     "all_missing": 10,
+     "segment_too_short": 86,
+     "too_missing": 101
+    },
+    "imputed_points": 439238,
+    "kept_obs": 4002348,
+    "kept_series": 1843
+   },
+   "elecdemand": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 17520,
+    "kept_series": 1
+   },
+   "era5_2018": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 8002176,
+    "kept_series": 916
+   },
+   "gfc12_load": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 788280,
+    "kept_series": 20
+   },
+   "gfc17_load": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 140352,
+    "kept_series": 8
+   },
+   "hog": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 421056,
+    "kept_series": 24
+   },
+   "ideal": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 1255253,
+    "kept_series": 217
+   },
+   "kdd2022": {
+    "dropped": {},
+    "imputed_points": 10892,
+    "kept_obs": 4688894,
+    "kept_series": 344
+   },
+   "kdd_cup_2018_with_missing": {
+    "dropped": {
+     "segment_too_short": 195,
+     "too_missing": 54
+    },
+    "imputed_points": 110173,
+    "kept_obs": 2105722,
+    "kept_series": 787
+   },
+   "largest_2017": {
+    "dropped": {
+     "constant": 1
+    },
+    "imputed_points": 1052,
+    "kept_obs": 8094095,
+    "kept_series": 80
+   },
+   "lcl": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4013293,
+    "kept_series": 300
+   },
+   "london_smart_meters_with_missing": {
+    "dropped": {},
+    "imputed_points": 208,
+    "kept_obs": 6007536,
+    "kept_series": 212
+   },
+   "oikolab_weather": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 800456,
+    "kept_series": 8
+   },
+   "pedestrian_counts": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 3130762,
+    "kept_series": 66
+   },
+   "residential_load_power": {
+    "dropped": {},
+    "imputed_points": 2200,
+    "kept_obs": 6079114,
+    "kept_series": 48
+   },
+   "residential_pv_power": {
+    "dropped": {
+     "too_missing": 3
+    },
+    "imputed_points": 2646,
+    "kept_obs": 6166836,
+    "kept_series": 54
+   },
+   "saugeenday": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 23711,
+    "kept_series": 1
+   },
+   "smart": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 95709,
+    "kept_series": 5
+   },
+   "solar_power": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 7397222,
+    "kept_series": 1
+   },
+   "spain": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 35064,
+    "kept_series": 1
+   },
+   "subseasonal": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4002210,
+    "kept_series": 243
+   },
+   "subseasonal_precip": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4008342,
+    "kept_series": 354
+   },
+   "temperature_rain_with_missing": {
+    "dropped": {
+     "constant": 1
+    },
+    "imputed_points": 187541,
+    "kept_obs": 4000652,
+    "kept_series": 5764
+   },
+   "traffic_hourly": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4013856,
+    "kept_series": 231
+   },
+   "weather": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 4022675,
+    "kept_series": 195
+   },
+   "wind_farms_with_missing": {
+    "dropped": {
+     "constant": 12
+    },
+    "imputed_points": 380,
+    "kept_obs": 8324670,
+    "kept_series": 68
+   },
+   "wind_power": {
+    "dropped": {},
+    "imputed_points": 0,
+    "kept_obs": 7397147,
+    "kept_series": 1
+   }
+  },
+  "decontaminated_series": {},
+  "raw_series": {
+   "LOOP_SEATTLE": 39,
+   "LOS_LOOP": 117,
+   "PEMS03": 153,
+   "PEMS04": 236,
+   "PEMS07": 142,
+   "PEMS08": 225,
+   "PEMS_BAY": 77,
+   "australian_electricity_demand": 5,
+   "azure_vm_traces_2017": 1060,
+   "bdg-2_bear": 91,
+   "bdg-2_fox": 135,
+   "bdg-2_panther": 105,
+   "bdg-2_rat": 235,
+   "beijing_air_quality": 115,
+   "borealis": 15,
+   "buildings_900k": 1370,
+   "bull": 41,
+   "china_air_quality": 582,
+   "elecdemand": 1,
+   "era5_2018": 916,
+   "gfc12_load": 20,
+   "gfc17_load": 8,
+   "hog": 24,
+   "ideal": 217,
+   "kdd2022": 134,
+   "kdd_cup_2018_with_missing": 270,
+   "largest_2017": 78,
+   "lcl": 298,
+   "london_smart_meters_with_missing": 212,
+   "oikolab_weather": 8,
+   "pedestrian_counts": 66,
+   "residential_load_power": 10,
+   "residential_pv_power": 15,
+   "saugeenday": 1,
+   "smart": 5,
+   "solar_power": 1,
+   "spain": 1,
+   "subseasonal": 243,
+   "subseasonal_precip": 354,
+   "temperature_rain_with_missing": 5758,
+   "traffic_hourly": 231,
+   "weather": 195,
+   "wind_farms_with_missing": 20,
+   "wind_power": 1
+  }
+ },
+ "build_seconds": 250.3,
+ "datasets": [
+  "LOOP_SEATTLE",
+  "LOS_LOOP",
+  "PEMS03",
+  "PEMS04",
+  "PEMS07",
+  "PEMS08",
+  "PEMS_BAY",
+  "australian_electricity_demand",
+  "azure_vm_traces_2017",
+  "bdg-2_bear",
+  "bdg-2_fox",
+  "bdg-2_panther",
+  "bdg-2_rat",
+  "beijing_air_quality",
+  "borealis",
+  "buildings_900k",
+  "bull",
+  "china_air_quality",
+  "elecdemand",
+  "era5_2018",
+  "gfc12_load",
+  "gfc17_load",
+  "hog",
+  "ideal",
+  "kdd2022",
+  "kdd_cup_2018_with_missing",
+  "largest_2017",
+  "lcl",
+  "london_smart_meters_with_missing",
+  "oikolab_weather",
+  "pedestrian_counts",
+  "residential_load_power",
+  "residential_pv_power",
+  "saugeenday",
+  "smart",
+  "solar_power",
+  "spain",
+  "subseasonal",
+  "subseasonal_precip",
+  "temperature_rain_with_missing",
+  "traffic_hourly",
+  "weather",
+  "wind_farms_with_missing",
+  "wind_power"
+ ],
+ "domains": {
+  "LOOP_SEATTLE": "transport",
+  "LOS_LOOP": "transport",
+  "PEMS03": "transport",
+  "PEMS04": "transport",
+  "PEMS07": "transport",
+  "PEMS08": "transport",
+  "PEMS_BAY": "transport",
+  "australian_electricity_demand": "energy",
+  "azure_vm_traces_2017": "telemetry",
+  "bdg-2_bear": "energy",
+  "bdg-2_fox": "energy",
+  "bdg-2_panther": "energy",
+  "bdg-2_rat": "energy",
+  "beijing_air_quality": "climate",
+  "borealis": "energy",
+  "buildings_900k": "energy",
+  "bull": "energy",
+  "china_air_quality": "climate",
+  "elecdemand": "energy",
+  "era5_2018": "climate",
+  "gfc12_load": "energy",
+  "gfc17_load": "energy",
+  "hog": "energy",
+  "ideal": "energy",
+  "kdd2022": "industrial",
+  "kdd_cup_2018_with_missing": "climate",
+  "largest_2017": "energy",
+  "lcl": "energy",
+  "london_smart_meters_with_missing": "energy",
+  "oikolab_weather": "climate",
+  "pedestrian_counts": "transport",
+  "residential_load_power": "energy",
+  "residential_pv_power": "energy",
+  "saugeenday": "climate",
+  "smart": "energy",
+  "solar_power": "industrial",
+  "spain": "energy",
+  "subseasonal": "climate",
+  "subseasonal_precip": "climate",
+  "temperature_rain_with_missing": "climate",
+  "traffic_hourly": "transport",
+  "weather": "climate",
+  "wind_farms_with_missing": "industrial",
+  "wind_power": "industrial"
+ },
+ "format": "sensorfm-shards-v1",
+ "freqs": [
+  "10T",
+  "30T",
+  "4S",
+  "5T",
+  "D",
+  "H",
+  "T"
+ ],
+ "manifest_sha256": "b72ed6c244dacc0be5bb3b10cf4e0fc04edd29fb6cb437742585f584a9147433",
+ "seed": 0,
+ "selection_file": "configs/data/lotsa_selection.yaml",
+ "splits": {
+  "train": {
+   "n_obs": 158511362,
+   "n_series": 15950,
+   "obs_per_dataset": {
+    "LOOP_SEATTLE": 3994560,
+    "LOS_LOOP": 3872736,
+    "PEMS03": 3983616,
+    "PEMS04": 3959136,
+    "PEMS07": 3951360,
+    "PEMS08": 3981888,
+    "PEMS_BAY": 4013856,
+    "australian_electricity_demand": 1153584,
+    "azure_vm_traces_2017": 5959083,
+    "bdg-2_bear": 1473552,
+    "bdg-2_fox": 2307024,
+    "bdg-2_panther": 911040,
+    "bdg-2_rat": 3973872,
+    "beijing_air_quality": 4012603,
+    "borealis": 83269,
+    "buildings_900k": 11879916,
+    "bull": 701760,
+    "china_air_quality": 3951061,
+    "elecdemand": 17520,
+    "era5_2018": 7932288,
+    "gfc12_load": 788280,
+    "gfc17_load": 140352,
+    "hog": 421056,
+    "ideal": 1237630,
+    "kdd2022": 4653878,
+    "kdd_cup_2018_with_missing": 2105722,
+    "largest_2017": 7883855,
+    "lcl": 3954590,
+    "london_smart_meters_with_missing": 5976432,
+    "oikolab_weather": 800456,
+    "pedestrian_counts": 3130762,
+    "residential_load_power": 6079114,
+    "residential_pv_power": 6166836,
+    "saugeenday": 23711,
+    "smart": 95709,
+    "solar_power": 7397222,
+    "spain": 35064,
+    "subseasonal": 3985740,
+    "subseasonal_precip": 3929081,
+    "temperature_rain_with_missing": 3963817,
+    "traffic_hourly": 3996480,
+    "weather": 3910034,
+    "wind_farms_with_missing": 8324670,
+    "wind_power": 7397147
+   },
+   "obs_per_domain": {
+    "climate": 34614513,
+    "energy": 55280455,
+    "industrial": 27772917,
+    "telemetry": 5959083,
+    "transport": 34884394
+   },
+   "shards": [
+    {
+     "bin": "shard_00000.bin",
+     "idx": "shard_00000.idx.npz",
+     "n_obs": 67124773,
+     "n_series": 6444,
+     "sha256_bin": "14b31ea201c4cbb00fecf6e6b566e6b5ca1cd995134760e21ca33708be3c1c18",
+     "sha256_idx": "0121643643ec797397d6dd8a2cd33f02742410db537c7b79b5471164ae448248"
+    },
+    {
+     "bin": "shard_00001.bin",
+     "idx": "shard_00001.idx.npz",
+     "n_obs": 67134489,
+     "n_series": 6729,
+     "sha256_bin": "3438e802c3c536b9365dc0681113fa0d50ce3c799bf469f7733f11816547f8fd",
+     "sha256_idx": "01ebf1fad504b28ef1d68848b8d32b926b8215a15168e564fd5da6dc1099b4c2"
+    },
+    {
+     "bin": "shard_00002.bin",
+     "idx": "shard_00002.idx.npz",
+     "n_obs": 24252100,
+     "n_series": 2777,
+     "sha256_bin": "0239f49c043adb7bc7e8656291320c45e225ea45eb28c1498b8ff7b09f7ca93e",
+     "sha256_idx": "35f0a09fa49aebb395a65b886f8402d240e7cbe2bb5a3e0d3c7b8853267b0be6"
+    }
+   ]
+  },
+  "val": {
+   "n_obs": 1404989,
+   "n_series": 164,
+   "obs_per_dataset": {
+    "LOOP_SEATTLE": 105120,
+    "LOS_LOOP": 137088,
+    "PEMS03": 26208,
+    "PEMS04": 50976,
+    "PEMS07": 56448,
+    "PEMS08": 35712,
+    "azure_vm_traces_2017": 46643,
+    "bdg-2_bear": 8760,
+    "bdg-2_fox": 17544,
+    "bdg-2_panther": 8760,
+    "bdg-2_rat": 35088,
+    "buildings_900k": 122654,
+    "bull": 17544,
+    "china_air_quality": 51287,
+    "era5_2018": 69888,
+    "ideal": 17623,
+    "kdd2022": 35016,
+    "largest_2017": 210240,
+    "lcl": 58703,
+    "london_smart_meters_with_missing": 31104,
+    "subseasonal": 16470,
+    "subseasonal_precip": 79261,
+    "temperature_rain_with_missing": 36835,
+    "traffic_hourly": 17376,
+    "weather": 112641
+   },
+   "obs_per_domain": {
+    "climate": 366382,
+    "energy": 528020,
+    "industrial": 35016,
+    "telemetry": 46643,
+    "transport": 428928
+   },
+   "shards": [
+    {
+     "bin": "shard_00000.bin",
+     "idx": "shard_00000.idx.npz",
+     "n_obs": 1404989,
+     "n_series": 164,
+     "sha256_bin": "c272c2eb2ed556e2464f2cb2b58ded08ddaa9dfbcf629c984e9758d99b748bf8",
+     "sha256_idx": "a1101efbd9cebd0cfe39678a19acb77082022e34e059382a0113a081c298014c"
+    }
+   ]
+  }
+ },
+ "synthetic_frac": 0.0,
+ "synthetic_only": false,
+ "val_frac": 0.01
+}

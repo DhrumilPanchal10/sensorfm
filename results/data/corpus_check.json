@@ -1,0 +1,30 @@
+{
+ "build_job": {
+  "job": "build-data",
+  "commit": "0a08fff0fe51bec45bac49a8ca857e35934d3324",
+  "cmd": "WORK=/kaggle/working TMP_CACHE=/tmp/hf bash kaggle/build_data.sh",
+  "env": {},
+  "returncode": 0,
+  "wall_s": 421
+ },
+ "manifest_sha256": "b72ed6c244dacc0be5bb3b10cf4e0fc04edd29fb6cb437742585f584a9147433",
+ "train": {
+  "n_series": 15950,
+  "n_obs": 158511362,
+  "obs_per_domain": {
+   "climate": 34614513,
+   "energy": 55280455,
+   "industrial": 27772917,
+   "telemetry": 5959083,
+   "transport": 34884394
+  }
+ },
+ "val": {
+  "n_series": 164,
+  "n_obs": 1404989
+ },
+ "subsets_in_train": 44,
+ "subsets_selected": 44,
+ "decontaminated_series": {},
+ "problems": []
+}
