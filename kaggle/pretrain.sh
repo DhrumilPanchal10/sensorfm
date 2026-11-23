@@ -10,6 +10,11 @@ RUN_ID=${RUN_ID:-${MODEL}_$(date +%Y%m%d)}; RESUME=${RESUME:-false}
 STRATEGY=${STRATEGY:-$([ "$NPROC" -gt 1 ] && echo ddp || echo none)}
 WALL=${WALL_MIN:-690}  # stop cleanly with a checkpoint before Kaggle's 12 h session limit
 
+if [ "$RESUME" = true ] && [ ! -d "runs/$RUN_ID" ]; then  # previous session attached as input
+  PREV=$(find -L /kaggle/input -maxdepth 6 -type d -path "*/runs/$RUN_ID" 2>/dev/null | head -1 || true)
+  [ -n "$PREV" ] || { echo "RESUME=true but no runs/$RUN_ID under /kaggle/input" >&2; exit 1; }
+  mkdir -p runs && cp -r "$PREV" "runs/$RUN_ID" && ls "runs/$RUN_ID/checkpoints"
+fi
 python scripts/estimate_budget.py --model "$MODEL" --steps "$STEPS" --micro-batch "$MB" --gpus "$NPROC"
 
 ARGS=(model="$MODEL" data=pretrain_main train=single_gpu train.strategy="$STRATEGY"

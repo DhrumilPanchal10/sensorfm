@@ -4,6 +4,9 @@
 #   CKPT=/kaggle/input/<runs-dataset>/runs/s20m_main/checkpoints/step_00020000 MODEL=s20m bash kaggle/run_downstream.sh
 set -euo pipefail
 source kaggle/gpu_setup.sh
+if [ -z "${CKPT:-}" ]; then  # newest checkpoint of the attached pretraining output
+  CKPT=$(find -L /kaggle/input -maxdepth 8 -type d -path "*/runs/${MODEL:-s20m}_main/checkpoints/step_*" 2>/dev/null | sort | tail -1 || true)
+fi
 : "${CKPT:?set CKPT to a pretraining checkpoint directory}"
 MODEL=${MODEL:-s20m}; TAG=${TAG:-$MODEL}
 uv pip install -q --python .venv/bin/python "chronos-forecasting>=2.3" || echo "chronos install failed (recorded as skipped)"

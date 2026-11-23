@@ -4,9 +4,10 @@
 # Expects the data built by kaggle/build_data.sh attached as a Kaggle Dataset input.
 set -euo pipefail
 
-DATA_IN=${DATA_IN:-$(ls -d /kaggle/input/*/shards/main 2>/dev/null | head -1 || true)}
+# Inputs may be a dataset or a notebook output, mounted at varying depths (and via symlinks).
+DATA_IN=${DATA_IN:-$(find -L /kaggle/input -maxdepth 6 -type d -path '*/shards/main' 2>/dev/null | head -1 || true)}
 if [ -z "${DATA_IN}" ]; then
-  echo "No shards found under /kaggle/input/*/shards/main — attach the sensorfm-data dataset." >&2
+  echo "No shards/main under /kaggle/input — attach the data-build output (or sensorfm-data)." >&2
   return 1 2>/dev/null || exit 1
 fi
 export SHARD_DIR="$DATA_IN"

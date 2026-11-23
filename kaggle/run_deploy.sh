@@ -4,6 +4,9 @@
 #   CKPT=/kaggle/input/<...>/runs/s20m_main/checkpoints/step_N TAG=s20m bash kaggle/run_deploy.sh
 set -euo pipefail
 source kaggle/gpu_setup.sh
+if [ -z "${CKPT:-}" ]; then  # newest checkpoint of the attached pretraining output
+  CKPT=$(find -L /kaggle/input -maxdepth 8 -type d -path "*/runs/${MODEL:-s20m}_main/checkpoints/step_*" 2>/dev/null | sort | tail -1 || true)
+fi
 : "${CKPT:?set CKPT to a pretraining checkpoint directory}"
 TAG=${TAG:-s20m}
 python -c "from sensorfm.utils.budget import estimate; estimate(0.5, 1, 'deploy: fine-tune FD001 + ONNX/INT8 + TensorRT FP16/INT8 benchmarks')"

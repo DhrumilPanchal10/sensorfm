@@ -3,7 +3,16 @@
 Kaggle Notebooks give free CPU sessions and a weekly GPU quota (T4 ×2 or P100). Check the current
 quota in your Kaggle settings; it changes. Nothing here costs money.
 
-## One-time setup
+## Driven from the Mac (preferred, no clicking)
+
+`scripts/kaggle_ctl.py` uses the `kaggle` CLI (already logged in): `push-code` uploads `git
+archive HEAD` as the private dataset `sensorfm-code` (no GitHub token needed), `push JOB` starts a
+private script kernel (`build-data` on CPU; `ladder-scaling`, `pretrain`, `downstream` on GPU T4
+x2), later jobs mount earlier outputs with `--after`, and `pull NAME --import-results` brings
+`results/` back. See the module docstring for the full sequence. The notebooks below are the
+manual alternative.
+
+## One-time setup (manual notebooks only)
 
 1. Push this repo to GitHub (private is fine). If private, create a fine-grained read-only token
    and add it as a Kaggle **Secret** named `GH_TOKEN` (Add-ons → Secrets).
