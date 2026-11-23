@@ -52,6 +52,10 @@ def main(
     for sub in ("cmapss", "ett", "cwru", "ucr", "reference"):
         if not (downstream / sub).is_dir():
             problems.append(f"missing downstream/{sub}")
+    ref = downstream / "reference"
+    ref_counts = {d.name: len(list(d.glob("*.npy"))) for d in sorted(ref.glob("*")) if d.is_dir()}
+    if not ref_counts or min(ref_counts.values()) == 0:
+        problems.append(f"decontamination reference empty or partial: {ref_counts}")
     summary = {
         "build_job": builds[0] if builds else None,
         "manifest_sha256": m["manifest_sha256"],
@@ -59,6 +63,7 @@ def main(
         "val": {k: va.get(k) for k in ("n_series", "n_obs")},
         "subsets_in_train": n_ds, "subsets_selected": n_sel,
         "decontaminated_series": m.get("build", {}).get("decontaminated_series"),
+        "reference_series": ref_counts,
         "problems": problems,
     }  # fmt: skip
     out_dir.mkdir(parents=True, exist_ok=True)
