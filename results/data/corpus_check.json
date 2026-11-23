@@ -26,5 +26,11 @@
  "subsets_in_train": 44,
  "subsets_selected": 44,
  "decontaminated_series": {},
+ "reference_series": {
+  "cmapss": 29736,
+  "cwru": 40,
+  "ett": 28,
+  "ucr": 250
+ },
  "problems": []
 }
