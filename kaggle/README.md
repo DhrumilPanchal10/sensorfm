@@ -32,7 +32,7 @@ Import each notebook the same way as step 1; attach the `sensorfm-data` dataset 
 |---|---|---|---|
 | `02_ladder_scaling.ipynb` | GPU T4 x2 | 1.1 | throughput ladder + profiler traces (1 GPU), DDP/FSDP2 scaling (1 vs 2 GPUs) |
 | `03_pretrain.ipynb` | GPU T4 x2 | ≤ 11.5 per session | DDP pretraining; stops with a checkpoint before the 12 h limit; to continue, attach the previous version as input and set `RESUME = True` |
-| `04_downstream.ipynb` | GPU T4 x1 | ~4 | RUL / bearing / forecasting / UCR for the checkpoint and its from-scratch twin, Chronos zero-shot, paired comparisons |
+| `04_downstream.ipynb` | GPU T4 x1 | ~4.5 | RUL / bearing / forecasting / UCR for the checkpoint and its from-scratch twin, Chronos zero-shot, paired comparisons; then deployment: ONNX + INT8 variants and TensorRT FP16/INT8 engines with metric deltas and latency |
 
 Download each run's `results/` (Output tab) back into the repo's `results/`, then `make report`.
 Kaggle charges quota per **session**-hour, so T4 x2 DDP gets ~2× the training per hour of quota.

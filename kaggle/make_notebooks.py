@@ -6,6 +6,7 @@
 02_ladder_scaling  GPU T4 x2: throughput ladder (1 GPU) + 1-vs-2 GPU DDP/FSDP2 scaling study
 03_pretrain        GPU T4 x2, DDP: resumable across sessions (attach previous output to resume)
 04_downstream      GPU T4 x1: fine-tune / evaluate a checkpoint + scratch twin + zero-shot baselines
+                   + deployment study (ONNX / INT8 / TensorRT)
 
 Every GPU notebook prints its budget estimate before launching anything (cost is $0; the
 estimate is in session-hours of the weekly Kaggle quota).
@@ -112,7 +113,7 @@ write("03_pretrain", [
 
 write("04_downstream", [
     md("# SensorFM — downstream evaluation (Phase 4)\n\n**Accelerator: GPU T4 x1** (P100 also fine). " + SETUP_HINT
-       + " Also add the **03_pretrain** notebook output as input (for the checkpoint).\n\nBudget ≈ 4 session-hours."),
+       + " Also add the **03_pretrain** notebook output as input (for the checkpoint).\n\nBudget ≈ 4.5 session-hours (incl. deployment)."),
     code("MODEL = 's20m'\nTAG = MODEL"),
     code(SECRETS),
     code(CLONE),
@@ -121,5 +122,8 @@ write("04_downstream", [
     code("%%bash -s \"$CKPT\" \"$MODEL\" \"$TAG\"\nset -e\ncd /kaggle/working/sensorfm-src\n"
          "cp -r /kaggle/input/*/results/eval/cmapss_baselines*.json results/eval/ 2>/dev/null || true\n"
          "CKPT=$1 MODEL=$2 TAG=$3 bash kaggle/run_downstream.sh 2>&1 | grep -v Warning | tail -60"),
+    md("## Deployment (Tasks 5.1/5.2): ONNX + INT8 (CPU) and TensorRT FP16/INT8 (T4), ≈ 0.5 h"),
+    code("%%bash -s \"$CKPT\" \"$TAG\"\nset -e\ncd /kaggle/working/sensorfm-src\n"
+         "CKPT=$1 TAG=$2 bash kaggle/run_deploy.sh 2>&1 | grep -v Warning | tail -30"),
     code(CLEANUP),
 ])  # fmt: skip

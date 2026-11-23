@@ -22,7 +22,7 @@ Verify your remaining weekly GPU quota in Kaggle (Settings → Accelerator) befo
 | 4 | `04_downstream.ipynb` (s20m) | 1× T4 | ~4 | RUL / forecast / zero-shot results (Phase 4) |
 | 5 | m60m pretrain | T4 ×2 DDP | ≤ 10 (2 sessions) | Task 3.5 size point |
 | 6 | l150m pretrain | T4 ×2 DDP | budget-dependent | Task 3.5 size point (may be skipped) |
-| 7 | Deploy: TensorRT FP16/INT8 + GPU latency | 1× T4 | 0.5 | `results/bench/*_trt.json` (Task 5.2) |
+| 7 | Deploy (last cell of `04_downstream.ipynb`, `kaggle/run_deploy.sh`) | 1× T4 | 0.5 | `results/bench/deploy_<tag>_{cpu,gpu}.json` (Tasks 5.1/5.2) |
 
 STEPS for run 3 is chosen after run 1: `python scripts/estimate_budget.py --model s20m --steps N`
 with the measured ladder throughput, sized so the run fits the approved hours.

@@ -18,3 +18,4 @@ data/downstream/*
 *.engine
 *.pt
 .DS_Store
+exports/

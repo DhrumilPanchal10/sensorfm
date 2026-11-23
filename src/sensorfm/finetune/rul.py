@@ -24,6 +24,7 @@ from sensorfm.finetune.common import (
     fit,
     load_encoder,
     predict,
+    save_regressor,
 )
 from sensorfm.model.sensorfm import ModelConfig
 
@@ -39,6 +40,7 @@ def run_rul(
     few_shot: float = 0.0,
     device: torch.device | None = None,
     fit_cfg: FitCfg | None = None,
+    save_to: Path | None = None,
 ) -> dict[str, Any]:
     device = device or torch.device("cpu")
     data = cmapss.load_subset(root, subset)
@@ -65,6 +67,9 @@ def run_rul(
 
     info = fit(model, Scaled(), train, val, val_rmse, seed, device, fit_cfg)
     pred = np.clip(predict(model, xte, mte, device) * scale, 0, cmapss.RUL_CAP)
+    if save_to is not None:
+        save_regressor(model, save_to, subset=subset, window=window, target_scale=scale,
+                       sensors=list(data.sensors))  # fmt: skip
     return {
         "subset": subset, "regime": regime, "seed": seed, "pretrained": ckpt is not None,
         "few_shot_frac": few_shot or None, "n_train_units": len(tr_u), "window": window,

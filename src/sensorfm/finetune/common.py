@@ -16,6 +16,7 @@ sees the concatenation of all per-channel features. Regimes:
 
 from __future__ import annotations
 
+import dataclasses
 from collections.abc import Callable
 from dataclasses import dataclass
 from pathlib import Path
@@ -173,3 +174,24 @@ def predict(
         mb = torch.as_tensor(m[i : i + batch]).to(device)
         outs.append(model(xb, mb).cpu())
     return torch.cat(outs).numpy()
+
+
+def save_regressor(model: Regressor, path: Path, **meta: Any) -> Path:
+    """Fine-tuned model + everything needed to rebuild it without the training code's arguments
+    (encoder config, channel count, regime, and task metadata such as the target scale)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    enc = model.backbone.encoder
+    torch.save({"state_dict": {k: v.cpu() for k, v in model.state_dict().items()},
+                "model_cfg": dataclasses.asdict(enc.cfg), "n_channels": model.backbone.n_channels,
+                "regime": model.regime, "meta": meta}, path)  # fmt: skip
+    return path
+
+
+def load_regressor(path: Path) -> tuple[Regressor, dict[str, Any]]:
+    blob = torch.load(path, map_location="cpu", weights_only=True)
+    raw = dict(blob["model_cfg"])
+    raw["quantiles"] = tuple(raw["quantiles"])
+    enc = SensorFM(ModelConfig(**raw))
+    model = Regressor(ChannelIndependent(enc, int(blob["n_channels"])), blob["regime"])
+    model.load_state_dict(blob["state_dict"])
+    return model.eval(), dict(blob["meta"])

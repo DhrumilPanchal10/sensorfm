@@ -41,10 +41,12 @@ profile:                # ladder + traces (GPU: kaggle/run_ladder.sh); CPU smoke
 	$(PY) python -m sensorfm.pretrain.bench --steps 40 --warmup 5 --micro-batch 16 --profile
 scale:                  # GPU only: kaggle/run_scaling.sh
 	@echo "run kaggle/run_scaling.sh on a Kaggle T4 x2 session" && exit 1
-export:
-	$(call TODO,Task 5.1)
-bench:
-	$(call TODO,Task 5.2)
+export:                 # TAG=s20m CKPT=runs/.../step_N (or REGRESSOR=exports/s20m/rul.pt)
+	$(PY) python scripts/deploy.py --tag $${TAG:-s20m} $${CKPT:+--ckpt $$CKPT} \
+		$${REGRESSOR:+--regressor $$REGRESSOR}
+bench:                  # re-time the exported ONNX variants of TAG on this machine
+	$(PY) python bench/latency.py --task rul --out results/bench/latency_$${TAG:-s20m}.json \
+		$(foreach v,fp32 int8_dyn int8_static int8_static_keep,--variant $(v)=exports/$${TAG:-s20m}/rul_$(v).onnx)
 serve:                  # SENSORFM_MODEL=path/to/model.onnx SENSORFM_TASK=rul|forecast
 	$(PY) uvicorn sensorfm.serving.app:app --port 8000
 report:                 # regenerate README results block + docs/reports from results/

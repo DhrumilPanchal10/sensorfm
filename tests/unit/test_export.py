@@ -71,3 +71,40 @@ def test_int8_variants_run_and_shrink(tmp_path: Path) -> None:
         out = run_ort(ort_session(q), inp)
         assert out.shape == ref.shape and np.all(np.isfinite(out))
         assert model_size_mb(q) < 0.6 * model_size_mb(fp32)
+
+
+def test_static_int8_survives_raw_sensor_scales(tmp_path: Path) -> None:
+    """Regression: quantizing RevIN's element-wise ops on raw inputs (channels with magnitudes
+    ~1 to ~9000, as in C-MAPSS) wrecked the encoder features (measured rel. error 0.82 with every
+    op quantized vs 0.009 for MatMul/Gemm only). Checked on features: an untrained head hides it."""
+    torch.manual_seed(0)
+    feats = ChannelIndependent(SensorFM(CFG), 3).eval()
+    rng = np.random.default_rng(0)
+    level = np.array([1.3, 640.0, 9050.0], dtype=np.float32)[None, :, None]
+    t = np.linspace(0, 6, 64, dtype=np.float32)
+
+    def inputs(b: int) -> dict[str, np.ndarray]:
+        wave = np.sin(t * rng.uniform(1, 3, (b, 3, 1))) + 0.3 * rng.standard_normal((b, 3, 64))
+        return {"x": (level * (1 + 0.002 * wave)).astype(np.float32),
+                "mask": np.ones((b, 64), dtype=bool)}  # fmt: skip
+
+    fp32 = export_onnx(feats, tuple(torch.as_tensor(v) for v in inputs(2).values()),
+                       ["x", "mask"], ["f"], tmp_path / "fp32.onnx")  # fmt: skip
+    sta = quantize_static_int8(fp32, tmp_path / "static.onnx", inputs(128))
+    inp = inputs(32)
+    ref = run_ort(ort_session(fp32), inp).reshape(32, 3, -1)[..., :-2]  # embedding part
+    out = run_ort(ort_session(sta), inp).reshape(32, 3, -1)[..., :-2]
+    assert np.abs(out - ref).mean() / ref.std() < 0.1
+
+
+def test_regressor_save_load_roundtrip(tmp_path: Path) -> None:
+    from sensorfm.finetune.common import load_regressor, save_regressor
+
+    torch.manual_seed(0)
+    model = Regressor(ChannelIndependent(SensorFM(CFG), 3), "full").eval()
+    path = save_regressor(model, tmp_path / "rul.pt", subset="FD001", window=64, target_scale=125.0)
+    again, meta = load_regressor(path)
+    inp = {k: torch.as_tensor(v) for k, v in _rul_inputs(4).items()}
+    with torch.no_grad():
+        assert torch.equal(model(**inp), again(**inp))
+    assert meta == {"subset": "FD001", "window": 64, "target_scale": 125.0}
