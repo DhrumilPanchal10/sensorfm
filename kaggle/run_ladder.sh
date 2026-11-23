@@ -3,6 +3,7 @@
 #   MODEL=s20m bash kaggle/run_ladder.sh
 set -euo pipefail
 source kaggle/gpu_setup.sh
+python scripts/check_data.py --shards "$SHARD_DIR" --downstream "$DOWNSTREAM_ROOT"
 MODEL=${MODEL:-s20m}
 STEPS=${STEPS:-300}
 
