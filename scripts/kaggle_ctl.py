@@ -37,6 +37,11 @@ SKIP_BIG = r"^(?!.*(shards/|downstream/|checkpoints/|mlruns/|exports/.*\.engine)
 JOBS: dict[str, tuple[bool, int, str]] = {
     "build-data": (False, 6 * 3600,
                    "WORK=/kaggle/working TMP_CACHE=/tmp/hf bash kaggle/build_data.sh"),
+    "check-data": (False, 3600,  # CPU: verify the build-data output without GPU quota
+                   "pip install -q typer pyyaml && python scripts/check_data.py"
+                   " --shards $(find -L /kaggle/input -maxdepth 6 -type d -path '*/shards/main' | head -1)"
+                   " --downstream $(find -L /kaggle/input -maxdepth 6 -type d -path '*/shards/main' | head -1)/../../downstream"
+                   " && mkdir -p /kaggle/working/results && cp -r results/data /kaggle/working/results/"),
     "ladder-scaling": (True, 3 * 3600,
                        "CUDA_VISIBLE_DEVICES=0 MODEL=${MODEL:-s20m} bash kaggle/run_ladder.sh"
                        " && bash kaggle/run_scaling.sh"),
@@ -120,7 +125,10 @@ def push(
         args = ["kernels", "push", "-p", str(stage), "-t", str(timeout_s)]
         if gpu:
             args += ["--accelerator", "NvidiaTeslaT4"]  # "GPU T4 x2"
-        print(_kaggle(*args).stdout.strip())
+        out = _kaggle(*args).stdout.strip()
+        print(out)
+        if "error" in out.lower():  # the CLI exits 0 on e.g. "Maximum weekly GPU quota reached"
+            raise SystemExit(f"push of {kname} rejected by Kaggle")
     print(f"pushed {kname} ({'GPU T4 x2' if gpu else 'CPU'}) at {head[:12]}: {cmd} {envd}")
 
 
